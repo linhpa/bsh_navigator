@@ -61,6 +61,38 @@
                             </div>
                         </div>
 
+                         <div class="form-group{{ $errors->has('role') ? ' has-error' : '' }}">
+                            <label for="role" class="col-md-4 control-label">Role</label>
+
+                            <div class="col-md-6">
+                                <select id="role" type="text" class="form-control" name="role" value="{{ old('role') }}" required>
+                                    @foreach ($roles as $role) 
+                                    <option value="{{ $role->role }}" {{ ($role->role == 'user') ? "selected" : "" }}>{{ $role->role }}</option>
+                                    @endforeach
+                                </select>
+                                
+                                @if ($errors->has('role'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('role') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group{{ $errors->has('gdv_id') ? ' has-error' : '' }}">
+                            <label for="gdv_id" class="col-md-4 control-label">GDV ID</label>
+
+                            <div class="col-md-6">
+                                <input id="gdv_id" type="text" class="form-control" name="gdv_id" value="{{ old('gdv_id') }}" required autofocus>
+
+                                @if ($errors->has('gdv_id'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('gdv_id') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
                         <div class="form-group">
                             <div class="col-md-6 col-md-offset-4">
                                 <button type="submit" class="btn btn-primary">

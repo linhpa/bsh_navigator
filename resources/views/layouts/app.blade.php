@@ -44,7 +44,7 @@
                         <!-- Authentication Links -->
                         @if (Auth::guest())
                             <li><a href="{{ route('login') }}">Login</a></li>
-                            <li><a href="{{ route('register') }}">Register</a></li>
+                            <!-- <li><a href="{{ route('register') }}">Register</a></li> -->
                         @else
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -65,6 +65,9 @@
                                     </li>
                                 </ul>
                             </li>
+                            @if (Auth::user()->role == 'admin')                            
+                            <li><a href="{{ route('register') }}">Register</a></li>
+                            @endif
                         @endif
                     </ul>
                 </div>
@@ -76,5 +79,69 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
+    <script type="text/javascript">
+        var apiGeolocationSuccess = function(position) {
+            //alert("API geolocation success!\n\nlat = " + position.coords.latitude + "\nlng = " + position.coords.longitude);
+            //console.log(position)            
+            $.post('http://115.146.126.84/api/locationServices/pushGDVLocation', {position: position, gdv_id: "{{ isset(Auth::user()->gdv_id) ? Auth::user()->gdv_id : '' }}"}, function (data) {
+                if (data.status == 1) {
+                    $("#noti").show()   
+                } else {
+                    $("#failnoti").show()   
+                }
+                $("#sending").hide()
+                
+            })
+            .fail(function(err) {
+                console.log('failed')
+            })
+        };
+
+        var tryAPIGeolocation = function() {
+            jQuery.post( "https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyDViaUZiCsi7LfCkwkdpLRT4AmWzWP9CnM", function(success) {
+                apiGeolocationSuccess({coords: {latitude: success.location.lat, longitude: success.location.lng}});
+          })
+          .fail(function(err) {
+            console.log("API Geolocation error! \n\n"+err);
+          });
+        };
+
+        var browserGeolocationSuccess = function(position) {
+            //alert("Browser geolocation success!\n\nlat = " + position.coords.latitude + "\nlng = " + position.coords.longitude);
+            apiGeolocationSuccess(position);
+        };
+
+        var browserGeolocationFail = function(error) {
+          let msg = ''
+          switch (error.code) {
+            case error.TIMEOUT:
+              msg = "Browser geolocation error !\n\nTimeout.";
+              break;
+            case error.PERMISSION_DENIED:               
+              // if(error.message.indexOf("Only secure origins are allowed") == 0) {
+              //   tryAPIGeolocation();
+              // }
+              tryAPIGeolocation();
+              break;
+            case error.POSITION_UNAVAILABLE:
+              msg = "Browser geolocation error !\n\nPosition unavailable.";
+              break;
+          }
+          console.log(msg)
+        };
+
+        var tryGeolocation = function() {
+          if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                browserGeolocationSuccess,
+              browserGeolocationFail,
+              {maximumAge: 50000, timeout: 20000, enableHighAccuracy: true});
+          }
+        };
+        if ("{{ !Auth::guest() }}" == "1") {
+            tryGeolocation();    
+        }        
+
+    </script>
 </body>
 </html>
