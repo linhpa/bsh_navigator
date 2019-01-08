@@ -15,16 +15,16 @@ class CreateBshCasesTable extends Migration
     {
         Schema::create('bsh_cases', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('user_id');
-            $table->string('case_id');
-            $table->string('customer_name');
+            $table->integer('user_id')->nullable();
+            $table->string('case_id')->nullable();
+            $table->string('customer_name')->nullable();
             $table->string('customer_phone');
-            $table->string('lat1');
-            $table->string('lng1');
-            $table->string('address1', 4000);
-            $table->string('lat2');
-            $table->string('lng2');
-            $table->string('address2', 4000);
+            $table->string('lat1')->nullable();
+            $table->string('lng1')->nullable();
+            $table->string('address1', 4000)->nullable();
+            $table->string('lat2')->nullable();
+            $table->string('lng2')->nullable();
+            $table->string('address2', 4000)->nullable();
             $table->timestamps();
         });
     }

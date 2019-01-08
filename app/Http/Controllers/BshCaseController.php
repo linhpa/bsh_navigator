@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use JWTAuth;
 use JWTAuthException;
 use App\User;
+use Auth;
 
 class BshCaseController extends Controller
 {
@@ -17,7 +18,14 @@ class BshCaseController extends Controller
      */
     public function index()
     {
-        //
+        if (Auth::user()->role == 'admin') {
+            $cases = BshCase::all();
+        } else {
+            $cases = BshCase::where('user_id', Auth::user()->id)->get();            
+        }
+        
+
+        return view('bshcase.index', compact('cases'));
     }
 
     /**
@@ -27,7 +35,7 @@ class BshCaseController extends Controller
      */
     public function create()
     {
-        //
+        
     }
 
     /**
@@ -38,7 +46,7 @@ class BshCaseController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        
     }
 
     /**
@@ -49,7 +57,7 @@ class BshCaseController extends Controller
      */
     public function show(BshCase $bshCase)
     {
-        //
+        
     }
 
     /**
@@ -59,8 +67,8 @@ class BshCaseController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit(BshCase $bshCase)
-    {
-        //
+    {        
+        
     }
 
     /**
@@ -104,7 +112,7 @@ class BshCaseController extends Controller
         $result = $this->bshCase->create([
             'customer_name' => $request->input('name'),
             'customer_phone' => $request->input('phone'),
-            'user_id' => $user->id,
+            'user_id' => $user == null ? null : $user->id,
             'case_id' => $request->input('case_id'),
             'lat1' => $request->input('lat1'),
             'lng1' => $request->input('lng1'),

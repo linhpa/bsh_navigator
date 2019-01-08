@@ -60,6 +60,6 @@ Route::group(['middleware' => ['auth', 'admin']], function() {
 	]);
 });
 
-Route::resource('agents', 'AgentController');
+Route::resource('bsh_cases', 'BshCaseController');
 
 Route::get('/home', 'HomeController@index')->name('home');

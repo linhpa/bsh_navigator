@@ -20,6 +20,10 @@ class VerifyJWTToken
     {
         try {
             $user = JWTAuth::toUser($request->input('token'));
+
+            if ($user->role != 'admin') {
+                return response()->json(['unauthorized'], 401);
+            }
         }catch (JWTException $e) {
             if($e instanceof \Tymon\JWTAuth\Exceptions\TokenExpiredException) {
                 return response()->json(['token_expired'], $e->getStatusCode());
