@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use JWTAuth;
 use JWTAuthException;
 use Hash;
+use Auth;
 
 class UserController extends Controller
 {
@@ -97,5 +98,31 @@ class UserController extends Controller
             return response()->json(['failed_to_create_token'], 500);
         }
         return response()->json(compact('token'));
+    }
+
+    public function changePassword() {
+        $user = User::where('id', Auth::user()->id)->firstOrFail();        
+
+        return view('auth.passwords.change_pw', compact('user'));
+    }
+
+    public function storeChangedPassword(Request $request) {
+        if (!(Hash::check($request->get('cur_password'), Auth::user()->password))) {
+            // The passwords matches
+            return redirect()->back()->with("error","Your current password does not matches with the password you provided. Please try again.");
+        }
+        if(strcmp($request->get('cur_password'), $request->get('password')) == 0){
+            //Current password and new password are same
+            return redirect()->back()->with("error","New Password cannot be same as your current password. Please choose a different password.");
+        }
+        $validatedData = $this->validate($request, [
+            'cur_password' => 'required',
+            'password' => 'required|string|min:6|confirmed',
+        ]);
+        //Change Password
+        $user = Auth::user();
+        $user->password = bcrypt($request->get('password'));
+        $user->save();
+        return redirect()->back()->with("success","Password changed successfully !");
     }
 }

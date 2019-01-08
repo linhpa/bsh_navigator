@@ -60,6 +60,18 @@ Route::group(['middleware' => ['auth', 'admin']], function() {
 	]);
 });
 
+Route::group(['middleware' => ['auth']], function () {
+	Route::get('change_pw', [
+		'uses' => 'UserController@changePassword',
+		'as' => 'change_pw'
+	]);
+	Route::post('change_pw', [
+		'uses' => 'UserController@storeChangedPassword',
+		'as' => 'change_pw.store'
+	]);
+}); 	
+
+
 Route::resource('bsh_cases', 'BshCaseController');
 
 Route::get('/home', 'HomeController@index')->name('home');
