@@ -14,7 +14,7 @@
                         </div>
                     @endif
 
-                    You are logged in!
+                    <a href="{{ route('bsh_cases.index') }}"><button>Case List</button></a>
                 </div>
             </div>
         </div>

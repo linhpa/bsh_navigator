@@ -20,6 +20,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::post('auth/login', 'UserController@login');
 
 Route::group(['middleware' => 'jwt.auth'], function () {
-	Route::get('/location', 'LocationController@getLocation');
-	Route::post('/location', 'LocationController@postLocation');
+	Route::get('/bshcase', 'BshCaseController@getCase');
+	Route::post('/bshcase', 'BshCaseController@postCase');
 });

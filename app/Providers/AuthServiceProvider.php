@@ -4,8 +4,8 @@ namespace App\Providers;
 
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
-use App\Agent;
-use App\Policies\AgentPolicy;
+use App\BshCase;
+use App\Policies\BshCasePolicy;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -16,7 +16,7 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         'App\Model' => 'App\Policies\ModelPolicy',
-        Agent::class => AgentPolicy::class,
+        BshCase::class => BshCasePolicy::class,
     ];
 
     /**

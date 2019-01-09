@@ -30,4 +30,8 @@ class User extends Authenticatable
     ];
 
     protected $dates = ['deleted_at'];
+
+    public function cases() {
+        return $this->hasMany('App\Case');
+    }
 }
