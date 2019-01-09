@@ -82,10 +82,17 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDViaUZiCsi7LfCkwkdpLRT4AmWzWP9CnM&libraries=places,geometry&callback=initAutocomplete" async defer></script>
+    <script type="text/javascript">
+        var initAutocomplete = function () {}
+    </script>
     <script type="text/javascript">
         var apiGeolocationSuccess = function(position) {
             //alert("API geolocation success!\n\nlat = " + position.coords.latitude + "\nlng = " + position.coords.longitude);
-            //console.log(position)            
+             
+            window.current_lat = position.coords.latitude
+            window.current_lng = position.coords.longitude   
+
             $.post('http://115.146.126.84/api/locationServices/pushGDVLocation', {position: position, gdv_id: "{{ isset(Auth::user()->gdv_id) ? Auth::user()->gdv_id : '' }}"}, function (data) {
                 if (data.status == 1) {
                     $("#noti").show()   
@@ -129,8 +136,7 @@
             case error.POSITION_UNAVAILABLE:
               msg = "Browser geolocation error !\n\nPosition unavailable.";
               break;
-          }
-          console.log(msg)
+          }          
         };
 
         var tryGeolocation = function() {
@@ -146,5 +152,6 @@
         }        
 
     </script>
+    @yield('javascript')
 </body>
 </html>

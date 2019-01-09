@@ -33,7 +33,7 @@
             <td>{{@$case->user->name}}</td>
             <td>{{@$case->address1}}</td>
             <td>{{@$case->address2}}</td>
-            
+            <td><a href="{{ url('bsh_cases/handle', $case->id)}}" class="btn btn-primary">Take Case</a></td>
         </tr>
         @endforeach
     </tbody>
