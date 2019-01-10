@@ -14,8 +14,7 @@ class BshCaseController extends Controller
 {
     protected $bshCase;
 
-    public function __construct(BshCase $bshCase) {
-        $this->middleware('auth');
+    public function __construct(BshCase $bshCase) {        
         $this->bshCase = $bshCase;
     }
 
@@ -125,7 +124,7 @@ class BshCaseController extends Controller
             $case->lng2 = $request->input('lng2');
             $case->address2 = $request->input('address2');
 
-            $case->save();        
+            $result = $case->save();        
         } else {
             $result = $this->bshCase->create([
                 'customer_name' => $request->input('name'),
