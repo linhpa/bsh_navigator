@@ -110,6 +110,20 @@
     .credit-card-box .panel-heading img {
         min-width: 180px;
     }
+
+    .input--file {
+      position: relative;
+      color: #7f7f7f;
+    }
+
+    /*.input--file input {
+      position: absolute;
+      top: 0;
+      left: 0;
+      opacity: 0;
+      display: none !important;
+    }*/
+
 </style>
 
 <div class="container" id="myWizard">
@@ -223,7 +237,7 @@
                 </form> -->
                 <div style="display: inline-block;">
                     @foreach ($photos as $photo)
-                    <img src="{{ URL::to('/') }}/uploads/{{ $photo->photo_url }}" alt="Image" height="100" width="100" />
+                    <img class="gallery-items" src="{{ URL::to('/') }}/uploads/{{ $photo->photo_url }}" alt="Image" height="100" width="100" />
                     @endforeach
                 </div>
 
@@ -237,14 +251,36 @@
                         {{ session('success') }}
                     </div>
                 @endif
-                <form action="{{ url('bsh_cases/uploadPhotos') }}" method="post" enctype="multipart/form-data">
-                    {{ csrf_field() }}
-                    <input type="hidden" name="case_id" value="{{ @$case->id }}">
-                    <label for="fileToUpload">Take or select photo(s)</label><br />
-                    <input type="file" name="files[]" id="files" multiple accept="image/*" capture="camera">
-                    <input type="submit" value="Upload" name="submit">                    
-                </form>
-             
+                <div class="row">
+                    <div class="col-xs-12 col-md-12" style="margin-bottom: 20px">
+                        <form action="{{ url('bsh_cases/uploadPhotos') }}" method="post" enctype="multipart/form-data">
+                            {{ csrf_field() }}
+                            <input type="hidden" name="case_id" value="{{ @$case->id }}">
+                            <!-- <label for="fileToUpload">Take or select photo(s)</label><br /> -->
+                            <br />
+                            <div class="input--file">
+                                <label for="files">
+                                  <span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                      <circle cx="12" cy="12" r="3.2"/>
+                                      <path d="M9 2l-1.83 2h-3.17c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2v-12c0-1.1-.9-2-2-2h-3.17l-1.83-2h-6zm3 15c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z"/>
+                                      <path d="M0 0h24v24h-24z" fill="none"/>
+                                    </svg>
+                                  </span>
+                                </label>
+                                <input style="display: none" type="file" name="files[]" id="files" multiple accept="image/*" >
+                            </div>
+                            <!-- <input type="file" name="files[]" id="files" multiple accept="image/*" capture="camera"> -->
+                            <input type="submit" value="Upload" name="submit">                    
+                        </form>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-xs-12">
+                        <button class="btn btn-primary btn-lg btn-block next" type="submit">Continue&nbsp;<!-- <span class="glyphicon glyphicon-chevron-right"></span> --></button>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="tab-pane fade" id="step3">
@@ -274,7 +310,19 @@
 
 @section('javascript')
 <script type="text/javascript">
+    //old tab handle when redirect back
     $('#tabMenu a[href="#{{ old('tab') }}"]').tab('show')
+
+    //image viewer
+    $(function () {
+        var viewer = ImageViewer();
+        $('.gallery-items').click(function () {
+            var imgSrc = this.src,
+                highResolutionImage = $(this).data('high-res-img');
+     
+            viewer.show(imgSrc, highResolutionImage);
+        });
+    });
 
     $('.next').click(function(){
 
