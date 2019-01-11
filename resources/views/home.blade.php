@@ -13,7 +13,25 @@
                             {{ session('status') }}
                         </div>
                     @endif
-
+                    <strong>Statistic {{ date("d/m/Y") }}</strong>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                              <td>New</td>
+                              <td>Pending</td>
+                              <td>Done</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($data as $row)
+                            <tr>
+                                <td>{{@$row->new}}</td>
+                                <td>{{@$row->pending}}</td>
+                                <td>{{@$row->done}}</td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
                     <a href="{{ route('bsh_cases.index') }}"><button>Case List</button></a>
                 </div>
             </div>
