@@ -3,7 +3,8 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1"> -->
+    <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' />
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -13,6 +14,9 @@
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/imageviewer.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">    
+    @yield('css')
 </head>
 <body>
     <div id="app">
@@ -76,14 +80,14 @@
                     </ul>
                 </div>
             </div>
-        </nav>
-
+        </nav>        
         @yield('content')
     </div>
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
     <script src="{{ asset('js/imageviewer.min.js') }}"></script>
+    <script src="{{ asset('js/bootstrap.min.js') }}"></script>    
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDViaUZiCsi7LfCkwkdpLRT4AmWzWP9CnM&libraries=places,geometry&callback=initAutocomplete" async defer></script>
     <script type="text/javascript">
         var initAutocomplete = function () {}

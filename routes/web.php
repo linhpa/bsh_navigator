@@ -69,13 +69,15 @@ Route::group(['middleware' => ['auth']], function () {
 		'uses' => 'UserController@storeChangedPassword',
 		'as' => 'change_pw.store'
 	]);	
+
+	Route::resource('bsh_cases', 'BshCaseController');
+	Route::get('/bsh_cases/handle/{id}', 'BshCaseController@showHandleCase');
+	Route::post('/bsh_cases/handle/', ['uses' => 'BshCaseController@handleCase', 'as' => 'bsh_cases.save']);
+
+	Route::post('/bsh_cases/uploadPhotos', 'BshCaseController@uploadPhotos');
+	Route::delete('deleteCasePhoto', 'BshCaseController@destroyPhoto');
 }); 	
 
 
-Route::resource('bsh_cases', 'BshCaseController');
-Route::get('/bsh_cases/handle/{id}', 'BshCaseController@showHandleCase');
-Route::post('/bsh_cases/handle/', 'BshCaseController@handleCase');
-
-Route::post('/bsh_cases/uploadPhotos', 'BshCaseController@uploadPhotos');
 
 Route::get('/home', 'HomeController@index')->name('home');
