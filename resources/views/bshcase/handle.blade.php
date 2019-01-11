@@ -490,13 +490,23 @@
         </div>
         <div class="tab-pane fade" id="step4">
             <div class="well">
-                <h3>4. Complete</h3> Back to Case List...
+                <h3>4. Complete</h3>
                 <div class="row">
-                    
+                    <div class="col-xs-12 col-md-12">
+                        <div class="form-group">
+                            <label>Status</label>
+                            <select id="status" name="status" title="Status" class="form-control  input-lg validate-select required-entry" defaultvalue="">
+                                <option value="">-- Select Status --</option>
+                                @foreach ($statuses as $key => $status)
+                                <option value="{{ $key }}" {{ $case->status == $key ? 'selected' : '' }}>{{ @$status }}</option>
+                                @endforeach                                
+                            </select>
+                        </div>
+                    </div>
                 </div>
                 <div class="btn-group btn-group-justified" role="group" aria-label="">                   
                     <div class="btn-group btn-group-lg" role="group" aria-label="">
-                        <a href="{{ url('bsh_cases') }}" style="text-decoration: none;"><button class="btn btn-primary btn-lg btn-block" >Complete</button></a>
+                        <button class="btn btn-primary btn-lg btn-block" id="complete-btn">Complete</button>
                     </div>
                 </div>
             </div>
@@ -510,6 +520,9 @@
 @endsection
 
 @section('javascript')
+<script src="{{ asset('js/app.js') }}"></script>
+<script src="{{ asset('js/bootstrap.min.js') }}"></script>
+<script src="{{ asset('js/imageviewer.min.js') }}"></script>  
 <script src="{{ asset('js/moment.min.js') }}"></script>
 <script src="{{ asset('js/bootstrap-datetimepicker.min.js') }}"></script>
 <script type="text/javascript">    
@@ -660,6 +673,26 @@
             },
             error: (xhr) => {
                 alert('Error..!!');
+            }
+        })
+    })
+
+    $("#complete-btn").on('click', (e) => {
+        $.post({
+            url: '{{ url('bsh_cases/complete') }}',
+            dataType: 'json',
+            data: {
+                _token: '{{ csrf_token() }}',
+                id: '{{ @$case->id }}',
+                status: $("#status option:selected").val()
+            },
+            success: (data) => {
+                if (data.result) {
+                    window.location = '{{ url('bsh_cases') }}'    
+                }                
+            },
+            error: (xhr) => {
+                alert('Error')
             }
         })
     })

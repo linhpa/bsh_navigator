@@ -14,6 +14,12 @@ class BshCaseController extends Controller
 {
     protected $bshCase;
 
+    protected $STATUSES = [
+        1 => 'New',
+        2 => 'Pending',
+        3 => 'Done'
+    ];
+
     public function __construct(BshCase $bshCase) {        
         $this->bshCase = $bshCase;
     }
@@ -31,8 +37,9 @@ class BshCaseController extends Controller
             $cases = BshCase::where('user_id', Auth::user()->id)->get();            
         }
         
+        $statuses = $this->STATUSES;
 
-        return view('bshcase.index', compact('cases'));
+        return view('bshcase.index', compact('cases', 'statuses'));
     }
 
     /**
@@ -150,7 +157,9 @@ class BshCaseController extends Controller
         $photos2 = DB::table('case_photos')->where(['case_id' => $case->id, 'type' => 2])->get();
         $photos3 = DB::table('case_photos')->where(['case_id' => $case->id, 'type' => 3])->get();
 
-        return view('bshcase.handle', compact('case', 'photos1', 'photos2', 'photos3'));
+        $statuses = $this->STATUSES;
+
+        return view('bshcase.handle', compact('case', 'photos1', 'photos2', 'photos3', 'statuses'));
     }
 
     public function handleCase(Request $request) {
@@ -170,6 +179,20 @@ class BshCaseController extends Controller
             $case->damage_level = $request->damage_level;
             $case->done_jobs = $request->done_jobs;
             $case->note = $request->note;
+
+            $result = $case->save();
+
+            return response()->json(['result' => $result]);
+        }
+
+        return response()->json(['result' => false]);
+    }
+
+    public function completeCase(Request $request) {
+        $case = BshCase::where('id', $request->id)->first();
+
+        if ($case != null) {
+            $case->status = (int)$request->status;
 
             $result = $case->save();
 
