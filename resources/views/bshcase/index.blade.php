@@ -12,7 +12,7 @@
       {{ session()->get('success') }}  
     </div><br />
   @endif
-  <table class="table table-striped">
+  <table class="table table-bordered">
     <thead>
         <tr>
           <td>Case ID</td>
@@ -21,7 +21,8 @@
           <td>Agent</td>
           <td>Address 1</td>
           <td>Address 2</td>
-          <td>Status</td>
+          <td>Updated At</td>
+          <td>Status</td>          
           <td colspan="2">Action</td>
         </tr>
     </thead>
@@ -34,6 +35,7 @@
             <td>{{@$case->user->name}}</td>
             <td>{{@$case->address1}}</td>
             <td>{{@$case->address2}}</td>
+            <td>{{@$case->updated_at}}</td>
             <td>{{@$statuses[$case->status] ?: 'New'}}</td>
             <td>
               <a href="{{ url('bsh_cases/handle', $case->id)}}" class="btn btn-primary">
@@ -48,5 +50,8 @@
         @endforeach
     </tbody>
   </table>
+  <div class="text-center">
+    {{ $cases->appends(Request::all())->links() }}
+  </div>
 <div>
 @endsection

@@ -29,12 +29,12 @@ class BshCaseController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         if (Auth::user()->role == 'admin') {
             $cases = BshCase::all();
         } else {
-            $cases = BshCase::where('user_id', Auth::user()->id)->get();            
+            $cases = BshCase::where('user_id', Auth::user()->id)->orderBy('status', 'asc')->orderBy('updated_at', 'desc')->paginate(10);
         }
         
         $statuses = $this->STATUSES;

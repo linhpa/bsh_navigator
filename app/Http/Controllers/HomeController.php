@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use \DB;
+use \Auth;
 
 class HomeController extends Controller
 {
@@ -23,6 +25,19 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $data = DB::table('bsh_cases')
+            ->select(DB::raw('           
+                count(case when status = 1 or status is null or status = 0 then 1 else null end) as new,
+                count(case when status = 2 then 1 else null end) as pending,
+                count(case when status = 3 then 1 else null end) as done
+            '));
+
+        if (Auth()->user()->role != 'admin') {
+            $data = $data->where('user_id', Auth::user()->id);
+        }
+            
+        $data = $data->whereRaw('date(updated_at) = date(now())')->get();
+
+        return view('home', compact('data'));
     }
 }
