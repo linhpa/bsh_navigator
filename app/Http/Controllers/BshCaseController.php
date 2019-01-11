@@ -32,7 +32,7 @@ class BshCaseController extends Controller
     public function index(Request $request)
     {
         if (Auth::user()->role == 'admin') {
-            $cases = BshCase::all();
+            $cases = BshCase::where()->orderBy('status', 'asc')->orderBy('updated_at', 'desc')->paginate(10);
         } else {
             $cases = BshCase::where('user_id', Auth::user()->id)->orderBy('status', 'asc')->orderBy('updated_at', 'desc')->paginate(10);
         }
