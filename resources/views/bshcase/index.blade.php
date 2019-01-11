@@ -7,6 +7,7 @@
   }
 </style>
 <div class="uper">
+  <h2>Case List</h2>
   @if(session()->get('success'))
     <div class="alert alert-success">
       {{ session()->get('success') }}  
