@@ -15,9 +15,9 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/imageviewer.css') }}" rel="stylesheet">
     <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">    
-    @yield('css')
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">        
 </head>
+@yield('css')
 <body>
     <div id="app">
         <nav class="navbar navbar-default navbar-static-top">
@@ -33,7 +33,7 @@
                     </button>
 
                     <!-- Branding Image -->
-                    <a class="navbar-brand" href="{{ url('/') }}">
+                    <a class="navbar-brand" href="{{ url('/home') }}">
                         {{ config('app.name', 'Laravel') }}
                     </a>
                 </div>
@@ -84,10 +84,8 @@
         @yield('content')
     </div>
 
-    <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}"></script>
-    <script src="{{ asset('js/imageviewer.min.js') }}"></script>
-    <script src="{{ asset('js/bootstrap.min.js') }}"></script>    
+    <!-- Scripts -->    
+    <script src="{{ asset('js/app.js') }}"></script>    
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDViaUZiCsi7LfCkwkdpLRT4AmWzWP9CnM&libraries=places,geometry&callback=initAutocomplete" async defer></script>
     <script type="text/javascript">
         var initAutocomplete = function () {}

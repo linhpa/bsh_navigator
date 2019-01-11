@@ -74,6 +74,8 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::get('/bsh_cases/handle/{id}', 'BshCaseController@showHandleCase');
 	Route::post('/bsh_cases/handle/', ['uses' => 'BshCaseController@handleCase', 'as' => 'bsh_cases.save']);
 
+	Route::post('/bsh_cases/complete/', 'BshCaseController@completeCase');
+
 	Route::post('/bsh_cases/uploadPhotos', 'BshCaseController@uploadPhotos');
 	Route::delete('deleteCasePhoto', 'BshCaseController@destroyPhoto');
 }); 	
