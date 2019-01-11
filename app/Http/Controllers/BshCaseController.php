@@ -146,18 +146,42 @@ class BshCaseController extends Controller
     public function showHandleCase($id) {
         $case = BshCase::where('id', $id)->first();
 
-        $photos = DB::table('case_photos')->where('case_id', $case->id)->get();
+        $photos1 = DB::table('case_photos')->where(['case_id' => $case->id, 'type' => 1])->get();
+        $photos2 = DB::table('case_photos')->where(['case_id' => $case->id, 'type' => 2])->get();
+        $photos3 = DB::table('case_photos')->where(['case_id' => $case->id, 'type' => 3])->get();
 
-        return view('bshcase.handle', compact('case', 'photos'));
+        return view('bshcase.handle', compact('case', 'photos1', 'photos2', 'photos3'));
     }
 
     public function handleCase(Request $request) {
+        $case = BshCase::where('id', $request->id)->first();
 
+        $case_time = date_create_from_format('d/m/Y H:i', $request->case_time);
+
+        if ($request->case_time == 0) {
+            unset($case_time);
+        }
+
+        if ($case != null) {
+            $case->case_time = isset($case_time) ? $case_time : null;
+            $case->case_location = $request->case_location;
+            $case->driver_info = $request->driver_info;
+            $case->case_detail_info = $request->case_detail_info;
+            $case->damage_level = $request->damage_level;
+            $case->done_jobs = $request->done_jobs;
+            $case->note = $request->note;
+
+            $result = $case->save();
+
+            return response()->json(['result' => $result]);
+        }
+
+        return response()->json(['result' => false]);
     }
     
-    public function uploadPhotos(Request $request) {
-        if($request->hasFile('files')){                       
-            $files = $request->file('files');
+    public function uploadPhotos(Request $request) {        
+        if($request->hasFile('files' . $request->type)){                       
+            $files = $request->file('files' . $request->type);
             
             $case = BshCase::where('id', $request->case_id)->first();
             $saveToCase = [];
@@ -167,11 +191,10 @@ class BshCaseController extends Controller
                 
                 $saveToCase[] = [
                     'case_id' => $case->id,
-                    'photo_url' => $newFileName
+                    'photo_url' => $newFileName,
+                    'type' => isset($request->type) ? (int)$request->type : null
                 ];
-            }
-
-            
+            }            
 
             if ($case != null) {                
                 DB::table('case_photos')->insert($saveToCase);
@@ -181,5 +204,11 @@ class BshCaseController extends Controller
         }
 
         return redirect()->back()->with("error","Photo Uploaded Failed...")->withInput(['tab'=>'step2']);
+    }
+
+    public function destroyPhoto(Request $request) {
+        $result = DB::table('case_photos')->where('photo_url', $request->id)->delete();
+
+        return response()->json(['result' => $result]);
     }
 }
