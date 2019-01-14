@@ -12,9 +12,9 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/imageviewer.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('/css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('/css/imageviewer.css') }}" rel="stylesheet">
+    <link href="{{ asset('/css/bootstrap.min.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">        
 </head>
 @yield('css')
@@ -85,47 +85,48 @@
     </div>
 
     <!-- Scripts -->    
-    <script src="{{ asset('js/app.js') }}"></script>    
+    <script src="{{ asset('/js/app.js') }}"></script>    
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDViaUZiCsi7LfCkwkdpLRT4AmWzWP9CnM&libraries=places,geometry&callback=initAutocomplete" async defer></script>
     <script type="text/javascript">
         var initAutocomplete = function () {}
     </script>
     <script type="text/javascript">
-        var apiGeolocationSuccess = function(position) {
+        var _apiGeolocationSuccess = function(position) {
             //alert("API geolocation success!\n\nlat = " + position.coords.latitude + "\nlng = " + position.coords.longitude);
              
             window.current_lat = position.coords.latitude
             window.current_lng = position.coords.longitude   
 
-            $.post('http://115.146.126.84/api/locationServices/pushGDVLocation', {position: position, gdv_id: "{{ isset(Auth::user()->gdv_id) ? Auth::user()->gdv_id : '' }}"}, function (data) {
-                if (data.status == 1) {
-                    $("#noti").show()   
-                } else {
-                    $("#failnoti").show()   
+            $.post({
+                url: "{{ url('bsh_cases/sendLocation') }}",                
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    position: position, 
+                    gdv_id: "{{ isset(Auth::user()->gdv_id) ? Auth::user()->gdv_id : '' }}"
+                }, 
+                success: function (data) {                    
                 }
-                $("#sending").hide()
-                
             })
             .fail(function(err) {
-                console.log('failed')
+                console.log('ajax failed')
             })
         };
 
-        var tryAPIGeolocation = function() {
+        var _tryAPIGeolocation = function() {
             jQuery.post( "https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyDViaUZiCsi7LfCkwkdpLRT4AmWzWP9CnM", function(success) {
-                apiGeolocationSuccess({coords: {latitude: success.location.lat, longitude: success.location.lng}});
+                _apiGeolocationSuccess({coords: {latitude: success.location.lat, longitude: success.location.lng}});
           })
           .fail(function(err) {
             console.log("API Geolocation error! \n\n"+err);
           });
         };
 
-        var browserGeolocationSuccess = function(position) {
+        var _browserGeolocationSuccess = function(position) {
             //alert("Browser geolocation success!\n\nlat = " + position.coords.latitude + "\nlng = " + position.coords.longitude);
-            apiGeolocationSuccess(position);
+            _apiGeolocationSuccess(position);
         };
 
-        var browserGeolocationFail = function(error) {
+        var _browserGeolocationFail = function(error) {
           let msg = ''
           switch (error.code) {
             case error.TIMEOUT:
@@ -133,9 +134,9 @@
               break;
             case error.PERMISSION_DENIED:               
               // if(error.message.indexOf("Only secure origins are allowed") == 0) {
-              //   tryAPIGeolocation();
+              //   _tryAPIGeolocation();
               // }
-              tryAPIGeolocation();
+              _tryAPIGeolocation();
               break;
             case error.POSITION_UNAVAILABLE:
               msg = "Browser geolocation error !\n\nPosition unavailable.";
@@ -143,16 +144,19 @@
           }          
         };
 
-        var tryGeolocation = function() {
+        var _tryGeolocation = function() {
           if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
-                browserGeolocationSuccess,
-              browserGeolocationFail,
+                _browserGeolocationSuccess,
+              _browserGeolocationFail,
               {maximumAge: 50000, timeout: 20000, enableHighAccuracy: true});
           }
         };
         if ("{{ !Auth::guest() }}" == "1") {
-            tryGeolocation();    
+            window.sendLocationInterval = setInterval(
+                _tryGeolocation
+            , 1000 * 30)                
+            _tryGeolocation()
         }        
 
     </script>

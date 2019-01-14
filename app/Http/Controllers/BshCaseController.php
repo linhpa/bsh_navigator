@@ -9,6 +9,8 @@ use JWTAuthException;
 use App\User;
 use Auth;
 use \DB;
+use GuzzleHttp;
+use GuzzleHttp\Client;
 
 class BshCaseController extends Controller
 {
@@ -233,5 +235,46 @@ class BshCaseController extends Controller
         $result = DB::table('case_photos')->where('photo_url', $request->id)->delete();
 
         return response()->json(['result' => $result]);
+    }
+
+    public function sendLocation(Request $request) {
+        $data = [];
+        $data['position'] = isset($request->position) ? $request->position : '';
+        $data['gdv_id'] = isset($request->gdv_id) ? $request->gdv_id : '';
+
+        $res = $this->callApiSendLocation($data);
+
+        return response()->json($res);
+    }
+
+    protected function callApiSendLocation($data) {
+        $client = new Client();
+
+        $response = $client->post('http://115.146.126.84/api/locationServices/pushGDVLocation', [
+            'form_params' => $data
+        ]);
+
+        return response()->json(['result' => $response]);
+
+        // $curl = curl_init();
+        // curl_setopt_array($curl, array(
+        //     CURLOPT_URL => 'http://115.146.126.84/api/locationServices/pushGDVLocation',
+        //     CURLOPT_RETURNTRANSFER => true,
+        //     CURLOPT_ENCODING => "",
+        //     CURLOPT_MAXREDIRS => 10,
+        //     CURLOPT_TIMEOUT => 30,
+        //     CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        //     CURLOPT_CUSTOMREQUEST => "POST",
+        //     CURLOPT_POSTFIELDS => json_encode($data),
+        //     CURLOPT_HTTPHEADER => array(
+        //         "accept: application/json",
+        //         "cache-control: no-cache",                
+        //         "content-type: application/json"
+        //     ),
+        // ));
+        // $response = curl_exec($curl);        
+        // $responseArr = (array) json_decode($response);
+
+        // return $responseArr;
     }
 }

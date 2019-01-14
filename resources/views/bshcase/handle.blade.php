@@ -520,8 +520,8 @@
 @endsection
 
 @section('javascript')
-<script src="{{ asset('js/app.js') }}"></script>
-<script src="{{ asset('js/bootstrap.min.js') }}"></script>
+<!-- <script src="{{ asset('js/app.js') }}"></script>
+<script src="{{ asset('js/bootstrap.min.js') }}"></script> -->
 <script src="{{ asset('js/imageviewer.min.js') }}"></script>  
 <script src="{{ asset('js/moment.min.js') }}"></script>
 <script src="{{ asset('js/bootstrap-datetimepicker.min.js') }}"></script>
@@ -790,8 +790,5 @@ initAutocomplete = function() {
 
 initAutocomplete();
 </script>
-<script type="text/javascript">
- 
- 
-</script>
+
 @endsection
