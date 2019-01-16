@@ -150,7 +150,7 @@ class BshCaseController extends Controller
         }
 
         $notiData = [
-            'gdv_id' => ($user == null) ? null : $user->id,
+            'gdv_id' => $request->input('gdv_id'),
             'body' => $request->input('address1')
         ];
 
