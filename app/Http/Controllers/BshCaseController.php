@@ -148,6 +148,13 @@ class BshCaseController extends Controller
                 'address2' => $request->input('address2'),
             ]);    
         }
+
+        $notiData = [
+            'gdv_id' => ($user == null) ? null : $user->id,
+            'body' => $request->input('address1')
+        ];
+
+        $this->pushNoti($notiData);
         
         return response()->json(['result' => $result]);
     }
@@ -276,5 +283,44 @@ class BshCaseController extends Controller
         // $responseArr = (array) json_decode($response);
 
         // return $responseArr;
+    }
+
+    protected function _noUse_pushNotification($token, $title, $body)
+    {
+        $fcmUrl = "https://fcm.googleapis.com/fcm/send";
+        // $token = "c_fvsCd2ME4:APA91bFyJUQuO5qfgLcKrACRq4Qmn8QGWMzH46JXc-BgRTVVPoWjXpUxwhTNtXaLxuDHO-8R8j3UtzK0P8JdLU1Zk7dgLU_34aydqT50CAUxK9wt04Zq9mCOrNDXfBQuT4XFnNSHgO-h";
+        
+
+        $notification = [
+            'title' => $title,
+            'body' => $body            
+        ];
+        
+        $extraNotificationData = ["message" => $notification,"moredata" =>'dd'];
+
+        $fcmNotification = [
+            //'registration_ids' => $tokenList, //multple token array
+            'to'        => $token, //single token
+            'notification' => $notification            
+        ];
+
+        $headers = [            
+            'Content-Type' => 'application/json',
+            'Authorization' => 'key=AAAAr5KJQZQ:APA91bGce1eDOO705Rr1CYpdQIBcuq2t4pcu1ktq2HGO7dXluEL0YG9CMkBIeeeRjujtVoBwVgxRXF_nzbPD6fAqUmLO8YxxSPxJxtdIORvsuEBSjOjoTU0Vg_WwKRr3b_sJy9f095_4'
+        ];
+
+        $client = new Client(['headers' => $headers]);
+
+        $response = $client->post($fcmUrl, ['body' => json_encode($fcmNotification)]);
+    }   
+
+    protected function pushNoti($data) {
+        $client = new Client();
+
+        $response = $client->post('http://115.146.126.84/api/locationServices/pushNoti', [
+            'form_params' => $data
+        ]);
+
+        return response()->json(['result' => $response]);
     }
 }

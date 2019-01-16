@@ -153,10 +153,10 @@
           }
         };
         if ("{{ !Auth::guest() }}" == "1") {
-            window.sendLocationInterval = setInterval(
-                _tryGeolocation
-            , 1000 * 30)                
-            _tryGeolocation()
+            // window.sendLocationInterval = setInterval(
+            //     _tryGeolocation
+            // , 1000 * 30)                
+            // _tryGeolocation()
         }        
 
     </script>
