@@ -132,6 +132,7 @@ class BshCaseController extends Controller
             $case->lat2 = $request->input('lat2');
             $case->lng2 = $request->input('lng2');
             $case->address2 = $request->input('address2');
+            $case->description = $request->input('description');
 
             $result = $case->save();        
         } else {
@@ -146,6 +147,7 @@ class BshCaseController extends Controller
                 'lat2' => $request->input('lat2'),
                 'lng2' => $request->input('lng2'),
                 'address2' => $request->input('address2'),
+                'description' => $request->input('description')
             ]);    
         }
 

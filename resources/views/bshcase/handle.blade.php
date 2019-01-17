@@ -206,8 +206,8 @@
                 <div class="row">
                     <div class="col-xs-12 col-md-12">
                         <div class="form-group ">
-                            <label>Car type:</label>
-                            <strong>{{ @$case->car_type }}</strong>
+                            <label>Description:</label>
+                            <strong>{{ @$case->description }}</strong>
                             <!-- <input class="form-control input-lg" placeholder="Email"> -->
                             <!-- <span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span> -->
                             <span id="inputError2Status" class="sr-only">(error)</span>
