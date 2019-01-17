@@ -11,6 +11,7 @@ use Auth;
 use \DB;
 use GuzzleHttp;
 use GuzzleHttp\Client;
+use App\Http\Config;
 
 class BshCaseController extends Controller
 {
@@ -152,6 +153,7 @@ class BshCaseController extends Controller
         }
 
         $notiData = [
+            'secret_key' => Config::getSecretKey(),
             'gdv_id' => $request->input('gdv_id'),
             'body' => $request->input('address1')
         ];
@@ -250,6 +252,7 @@ class BshCaseController extends Controller
         $data = [];
         $data['position'] = isset($request->position) ? $request->position : '';
         $data['gdv_id'] = isset($request->gdv_id) ? $request->gdv_id : '';
+        $data['secret_key'] = Config::getSecretKey();
 
         $res = $this->callApiSendLocation($data);
 

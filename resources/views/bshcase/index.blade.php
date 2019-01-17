@@ -13,7 +13,7 @@
     <table class="table table-bordered">
         <thead>
             <tr>
-                <td>Case ID</td>
+                <!-- <td>Case ID</td> -->
                 <td>Name</td>
                 <td>Phone</td>
                 <td>Agent</td>
@@ -27,7 +27,7 @@
         <tbody>
             @foreach($cases as $case)
             <tr>
-                <td>{{@$case->case_id}}</td>
+                <!-- <td>{{@$case->case_id}}</td> -->
                 <td>{{@$case->customer_name}}</td>
                 <td>{{@$case->customer_phone}}</td>
                 <td>{{@$case->user->name}}</td>
