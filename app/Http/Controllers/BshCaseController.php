@@ -204,6 +204,8 @@ class BshCaseController extends Controller
     public function completeCase(Request $request) {
         $case = BshCase::where('id', $request->id)->first();
 
+        $this->saveDoneCase($case);
+
         if ($case != null) {
             $case->status = (int)$request->status;
 
@@ -323,6 +325,38 @@ class BshCaseController extends Controller
         $client = new Client();
 
         $response = $client->post('http://115.146.126.84/api/locationServices/pushNoti', [
+            'form_params' => $data
+        ]);
+
+        return response()->json(['result' => $response]);
+    }
+
+    protected function saveDoneCase($case) {
+        $photos = DB::table('case_photos')->where('case_id', $case->id)->get();
+
+        $data = [
+            'case_id' => $case->case_id,
+            'case_time' => $case->case_time,
+            'case_location' => $case->case_location,
+            'driver_info' => $case->driver_info,
+            'case_detail_info' => $case->case_detail_info,
+            'damage_level' => $case->damage_level,
+            'done_jobs' => $case->done_jobs,
+            'note' => $case->note,
+            'status' => $case->status,            
+        ];
+
+        $data['photos'] = [];        
+
+        foreach ($photos as $photo) {
+            $data['photos'][] = ['url' => public_path() . "/uploads/" . $photo->photo_url, 'type' => $photo->type];
+        }
+
+        $data['secret_key'] = Config::getSecretKey();
+
+        $client = new Client();
+
+        $response = $client->post('http://115.146.126.84/api/locationServices/saveDoneCase', [
             'form_params' => $data
         ]);
 
