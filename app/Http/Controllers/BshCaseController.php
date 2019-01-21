@@ -349,7 +349,7 @@ class BshCaseController extends Controller
         $data['photos'] = [];        
 
         foreach ($photos as $photo) {
-            $data['photos'][] = ['url' => public_path() . "/uploads/" . $photo->photo_url, 'type' => $photo->type];
+            $data['photos'][] = ['url' => url("/uploads/" . $photo->photo_url), 'type' => $photo->type];
         }
 
         $data['secret_key'] = Config::getSecretKey();
