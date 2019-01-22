@@ -162,7 +162,7 @@
 <div class="container" id="myWizard">
     <div class="row">
       <div class="col-xs-10 col-md-10">
-        <h3><span class=""></span>&nbsp;Case Progress</h3>
+        <h3><span class=""></span><a href="{{url('bsh_cases')}}">&nbsp;Case List</a></h3>
       </div>
     </div>
     <hr>
