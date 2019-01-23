@@ -33,11 +33,19 @@ class BshCaseController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
-    {
+    {        
         if (Auth::user()->role == 'admin') {
-            $cases = BshCase::find(1)->orderBy('status', 'asc')->orderBy('updated_at', 'desc')->paginate(10);
+            if (isset($request->new) && $request->new == 1) {
+                $cases = BshCase::where('status', 1)->orWhere('status', null)->orWhere('status', 0)->orderBy('status', 'asc')->orderBy('updated_at', 'desc')->paginate(10);
+            } else {
+                $cases = BshCase::find(1)->orderBy('status', 'asc')->orderBy('updated_at', 'desc')->paginate(10);    
+            }
         } else {
-            $cases = BshCase::where('user_id', Auth::user()->id)->orderBy('status', 'asc')->orderBy('updated_at', 'desc')->paginate(10);
+            if (isset($request->new) && $request->new == 1) {
+                $cases = BshCase::where('user_id', Auth::user()->id)->where('status', 1)->orWhere('status', null)->orWhere('status', 0)->orderBy('status', 'asc')->orderBy('updated_at', 'desc')->paginate(10);
+            } else {
+                $cases = BshCase::where('user_id', Auth::user()->id)->orderBy('status', 'asc')->orderBy('updated_at', 'desc')->paginate(10);
+            }
         }
         
         $statuses = $this->STATUSES;

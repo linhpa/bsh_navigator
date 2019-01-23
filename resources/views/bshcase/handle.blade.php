@@ -65,13 +65,13 @@
       color: #fff;
     }
     .nav-pills.nav-wizard > li.active .nav-arrow {
-      border-color: transparent transparent transparent #428bca;
+      border-color: transparent transparent transparent #FAA61A;
     }
     .nav-pills.nav-wizard > li.active .nav-wedge {
-      border-color: #428bca #428bca #428bca transparent;
+      border-color: #FAA61A #FAA61A #FAA61A transparent;
     }
     .nav-pills.nav-wizard > li.active a {
-      background-color: #428bca;
+      background-color: #FAA61A;
     }
     /* CSS for Credit Card Payment form */
     .credit-card-box .panel-title {
@@ -171,7 +171,7 @@
             Step 1 of 4
         </div>
     </div> -->
-    <div class="navbar">
+    <div class="navbar" style="pointer-events:none">
         <div class="navbar-inner">
             <ul class="nav nav-pills nav-wizard" id="tabMenu">
                 <li class="active">
@@ -241,7 +241,7 @@
                 </div>
                 <div class="row">
                     <div class="col-xs-12">
-                        <button class="btn btn-primary btn-lg btn-block next">Continue&nbsp;<!-- <span class="glyphicon glyphicon-chevron-right"></span> --></button>
+                        <button class="btn btn-primary btn-lg btn-block next" id="confirmArrived" disabled>Confirm Arrived<!-- <span class="glyphicon glyphicon-chevron-right"></span> --></button>
                     </div>
                 </div>
             </div>
@@ -295,7 +295,7 @@
                                         </svg>
                                       </span>
                                     </label>
-                                    <input style="display: none" type="file" name="files1[]" class="files" id="files1" multiple accept="image/*" >
+                                    <input style="display: none" type="file" name="files1[]" class="files" id="files1" multiple accept="image/*" capture="camera">
                                     <output id="list1" style="margin-bottom: 10px"></output>
                                 </div>
                                 <!-- <input type="file" name="files[]" id="files" multiple accept="image/*" capture="camera"> -->
@@ -720,17 +720,27 @@ var apiGeolocationSuccess = function(position) {
 
     markers.push(new google.maps.Marker({          
         icon: '{{ asset('images/cust_location.png') }}',
+        title: 'Customer Position 2',
+        position: {lat: {{ @$case->lat2 }}, lng: {{ @$case->lng2 }}},
+        map: map
+    }));
+
+    window.customerLocation = new google.maps.LatLng(parseFloat({{ @$case->lat2 }}), parseFloat({{ @$case->lng2 }}))
+
+    @if (!isset($case->lat2) || $case->lat2 == null) 
+    markers.push(new google.maps.Marker({          
+        icon: '{{ asset('images/cust_location.png') }}',
         title: 'Customer Position 1',
         position: {lat: {{ @$case->lat1 }}, lng: {{ @$case->lng1 }}},
         map: map
     }));
 
-    markers.push(new google.maps.Marker({          
-        icon: '{{ asset('images/cust_location.png') }}',
-        title: 'Customer Position 2',
-        position: {lat: {{ @$case->lat2 }}, lng: {{ @$case->lng2 }}},
-        map: map
-    }));
+    window.customerLocation = new google.maps.LatLng(parseFloat({{ @$case->lat1 }}), parseFloat({{ @$case->lng1 }}))
+    
+    @endif
+
+    checkDistance(current_lat, current_lng)
+    
 
     var bounds = new google.maps.LatLngBounds();
     for (var i = 0; i < markers.length; i++) {
@@ -783,6 +793,21 @@ var tryGeolocation = function() {
 if ("{{ !Auth::guest() }}" == "1") {
     tryGeolocation();    
 }        
+
+var watchID = navigator.geolocation.watchPosition(function(position) {
+    checkDistance(position.coords.latitude, position.coords.longitude);
+    apiGeolocationSuccess(position);
+});
+
+function checkDistance(lat, lng) {
+    let gdvPos = new google.maps.LatLng(parseFloat(lat), parseFloat(lng))
+    distance = google.maps.geometry.spherical.computeDistanceBetween(gdvPos, customerLocation)
+
+    if (distance <= 200) {
+        $("#confirmArrived").removeAttr('disabled');
+        console.log('toi roi')
+    }
+}
 
 initAutocomplete = function() {
     

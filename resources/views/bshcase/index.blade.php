@@ -11,8 +11,8 @@
 body {
   color: #000;
   font-family: "Roboto", sans-serif;
-  font-size: 18px;
-  font-weight: 400;
+  /*font-size: 18px;
+  font-weight: 400;*/
   line-height: 1.6;
 }
 
@@ -246,21 +246,23 @@ body {
               <a class="wrapping-link" href="{{ url('bsh_cases/handle', $case->id)}}"></a>
               <div class="grid-item-wrapper">
                 <div class="grid-item-container">
-                  @if (@$case->status == 3)
+                  <!-- @if (@$case->status == 3)
                   <div class="grid-image-top done-case">
                   @elseif (@$case->status == 2)         
                   <div class="grid-image-top pending-case">         
                   @else
                   <div class="grid-image-top new-case">
-                  @endif
+                  @endif -->
+                  <div class="grid-image-top pending-case">
                     <span class="centered">{{@$case->customer_name}} -- {{@$case->customer_phone}}</span>
                   </div>
                   <div class="grid-item-content">
                     <span class="item-title">Case ID: {{ @$case->id }}</span>
                     <span class="item-category">{{ @$case->description }}</span>
-                    <span class="item-excerpt">{{ @$case->address1 }}</span>
-                    <span class="item-excerpt">{{ @$case->address2 }}</span>
-                    
+                    <span class="item-excerpt">Address: {{ @$case->address2 }}</span>
+                    @if (!isset($case->address2))
+                    <span class="item-excerpt">Address: {{ @$case->address1 }}</span>
+                    @endif                    
                   </div>
                 </div>
               </div>

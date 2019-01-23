@@ -35,8 +35,10 @@ class HomeController extends Controller
         if (Auth()->user()->role != 'admin') {
             $data = $data->where('user_id', Auth::user()->id);
         }
+
+        $data = $data->get();
             
-        $data = $data->whereRaw('date(updated_at) = date(now())')->get();
+        //$data = $data->whereRaw('date(updated_at) = date(now())')->get();
 
         return view('home', compact('data'));
     }

@@ -50,9 +50,9 @@
             }
 
             .links > a {
-                color: #636b6f;
+                color: #FAA61A;
                 padding: 0 25px;
-                font-size: 12px;
+                font-size: 16px;
                 font-weight: 600;
                 letter-spacing: .1rem;
                 text-decoration: none;
@@ -79,12 +79,13 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    BSH Navigator App
+                    <!-- BSH Navigator App -->
+                    <img src="{{ asset('images/Logo-BSH -w.jpg') }}" width="200px" height="100px">
                 </div>
 
                 <div class="links">
-                    <a href="https://bshc.com.vn/">BSH</a>
-                    <a href="https://southtelecom.vn/">Southtelecom</a>
+                    <a href="{{ url('/home') }}">START</a>
+                    <!-- <a href="https://southtelecom.vn/">Southtelecom</a> -->
                     <!-- <a href="https://laravel-news.com">News</a>
                     <a href="https://forge.laravel.com">Forge</a>
                     <a href="https://github.com/laravel/laravel">GitHub</a> -->
