@@ -535,10 +535,6 @@
         });
     })
 
-    $('.files').on('click', (e) => {
-      Android.showAndroidCamera();
-    })
-
     $("#info-form").on('submit', (e) => {
         e.preventDefault()
 
