@@ -335,7 +335,7 @@
                                         </svg>
                                       </span>
                                     </label>
-                                    <input style="display: none" type="file" name="files2[]" class="files" id="files2" multiple accept="image/*" >
+                                    <input style="display: none" type="file" name="files2[]" class="files" id="files2" multiple accept="image/*" capture="camera">
                                     <output id="list2" style="margin-bottom: 10px"></output>
                                 </div>
                                 <!-- <input type="file" name="files[]" id="files" multiple accept="image/*" capture="camera"> -->
@@ -375,7 +375,7 @@
                                         </svg>
                                       </span>
                                     </label>
-                                    <input style="display: none" type="file" name="files3[]" class="files" id="files3" multiple accept="image/*" >
+                                    <input style="display: none" type="file" name="files3[]" class="files" id="files3" multiple accept="image/*" capture="camera">
                                     <output id="list3" style="margin-bottom: 10px"></output>
                                 </div>
                                 <!-- <input type="file" name="files[]" id="files" multiple accept="image/*" capture="camera"> -->
