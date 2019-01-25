@@ -241,7 +241,7 @@
                 </div>
                 <div class="row">
                     <div class="col-xs-12">
-                        <button class="btn btn-primary btn-lg btn-block next" id="confirmArrived" disabled>Confirm Arrived<!-- <span class="glyphicon glyphicon-chevron-right"></span> --></button>
+                        <button class="btn btn-primary btn-lg btn-block next" id="confirmArrived" style="display: none">Confirm Arrival<!-- <span class="glyphicon glyphicon-chevron-right"></span> --></button>
                     </div>
                 </div>
             </div>
@@ -718,12 +718,14 @@ var apiGeolocationSuccess = function(position) {
         map: map
     }));
 
+    @if (isset($case->lat2) && $case->lat2 != null) 
     markers.push(new google.maps.Marker({          
         icon: '{{ asset('images/cust_location.png') }}',
         title: 'Customer Position 2',
         position: {lat: {{ @$case->lat2 }}, lng: {{ @$case->lng2 }}},
         map: map
     }));
+    @endif
 
     window.customerLocation = new google.maps.LatLng(parseFloat({{ @$case->lat2 }}), parseFloat({{ @$case->lng2 }}))
 
@@ -804,7 +806,7 @@ function checkDistance(lat, lng) {
     distance = google.maps.geometry.spherical.computeDistanceBetween(gdvPos, customerLocation)
 
     if (distance <= 200) {
-        $("#confirmArrived").removeAttr('disabled');
+        $("#confirmArrived").css('display', 'block');
         console.log('toi roi')
     }
 }
