@@ -535,6 +535,10 @@
         });
     })
 
+    $('.files').on('click', (e) => {
+      Android.showAndroidCamera();
+    })
+
     $("#info-form").on('submit', (e) => {
         e.preventDefault()
 
@@ -861,8 +865,7 @@ function checkDistance(lat, lng) {
     distance = google.maps.geometry.spherical.computeDistanceBetween(gdvPos, customerLocation)
 
     if (distance <= 200) {
-        $("#confirmArrived").css('display', 'block');
-        console.log('toi roi')
+        $("#confirmArrived").css('display', 'block');        
     }
 }
 
