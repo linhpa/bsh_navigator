@@ -370,4 +370,28 @@ class BshCaseController extends Controller
 
         return response()->json(['result' => $response]);
     }
+
+    public function getGDVLocation(Request $request) {           
+        if (isset($request->gdv_id) && $request->gdv_id != null) {
+            
+            $data = [];
+
+            $data['gdv_id'] = $request->gdv_id;
+            $data['secret_key'] = Config::getSecretKey();
+
+            try {
+                $client = new Client();            
+
+                $response = $client->post('http://115.146.126.84/api/locationServices/getGDVLocation', [
+                    'form_params' => $data
+                ]);                
+            } catch (RequestException $e) {                
+                return response()->json(['result' => false, 'message' => $e->getMessage()]);
+            }
+
+            return $response->getBody();
+        }
+
+        return response()->json(['result' => false]);
+    }
 }

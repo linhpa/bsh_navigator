@@ -709,14 +709,7 @@ var apiGeolocationSuccess = function(position) {
       zoom: 16
     });
 
-    let markers = [];
-
-    markers.push(new google.maps.Marker({          
-        icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png',
-        title: 'Current Position',
-        position: {lat: current_lat, lng: current_lng},
-        map: map
-    }));
+    window.markers = [];    
 
     @if (isset($case->lat2) && $case->lat2 != null) 
     markers.push(new google.maps.Marker({          
@@ -740,6 +733,13 @@ var apiGeolocationSuccess = function(position) {
     window.customerLocation = new google.maps.LatLng(parseFloat({{ @$case->lat1 }}), parseFloat({{ @$case->lng1 }}))
     
     @endif
+
+    markers.push(new google.maps.Marker({          
+        icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png',
+        title: 'Current Position',
+        position: {lat: current_lat, lng: current_lng},
+        map: map
+    }));
 
     checkDistance(current_lat, current_lng)
     
@@ -793,13 +793,68 @@ var tryGeolocation = function() {
   }
 };
 if ("{{ !Auth::guest() }}" == "1") {
-    tryGeolocation();    
-}        
+    //tryGeolocation();    
+    window.intervalGetLocation = setInterval(getGDVLocation, 10 * 1000)
+}     
 
-var watchID = navigator.geolocation.watchPosition(function(position) {
-    checkDistance(position.coords.latitude, position.coords.longitude);
-    apiGeolocationSuccess(position);
-});
+$.post({
+    url: '{{ url('bsh_cases/getGDVLocation') }}',
+    dataType: 'json',
+    data: {
+        _token: '{{ csrf_token() }}',
+        gdv_id: '{{ @$case->user->gdv_id }}',            
+    },
+    success: (data) => {
+        if (data.data) {
+            let position = data.data.position
+            apiGeolocationSuccess(position)
+            checkDistance(position.coords.latitude, position.coords.longitude)
+        }
+    },
+    error: (xhr) => {
+        alert('Error')
+    }
+})
+
+function getGDVLocation() {
+    $.post({
+        url: '{{ url('bsh_cases/getGDVLocation') }}',
+        dataType: 'json',
+        data: {
+            _token: '{{ csrf_token() }}',
+            gdv_id: '{{ @$case->user->gdv_id }}',            
+        },
+        success: (data) => {
+            if (data.data) {
+                let position = data.data.position
+                //apiGeolocationSuccess(position)
+                checkDistance(position.coords.latitude, position.coords.longitude)
+                updateGDVMarker(position)
+            }
+        },
+        error: (xhr) => {
+            alert('Error')
+        }
+    })
+}
+
+function updateGDVMarker(position) {
+    let lat = position.coords.latitude, lng = position.coords.longitude
+
+    gdvMarker = window.markers.pop()
+    gdvMarker.setMap(null)
+    window.markers.push(new google.maps.Marker({          
+        icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png',
+        title: 'Current Position',
+        position: {lat: lat, lng: lng},
+        map: map
+    }))
+}
+
+// var watchID = navigator.geolocation.watchPosition(function(position) {
+//     checkDistance(position.coords.latitude, position.coords.longitude);
+//     apiGeolocationSuccess(position);
+// });
 
 function checkDistance(lat, lng) {
     let gdvPos = new google.maps.LatLng(parseFloat(lat), parseFloat(lng))
@@ -810,6 +865,8 @@ function checkDistance(lat, lng) {
         console.log('toi roi')
     }
 }
+
+
 
 initAutocomplete = function() {
     
