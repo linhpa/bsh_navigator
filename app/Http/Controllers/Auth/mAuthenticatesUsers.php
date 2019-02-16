@@ -17,7 +17,7 @@ trait mAuthenticatesUsers {
         $this->clearLoginAttempts($request);
 
         $gdv_id = Auth::user()->gdv_id;
-        setcookie("gdv_id", $gdv_id, 0);
+        setcookie("gdv_id", $gdv_id, time() + 24*60*60*1000);
 
         return $this->authenticated($request, $this->guard()->user())
                 ?: redirect()->intended($this->redirectPath());
