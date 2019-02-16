@@ -1,0 +1,26 @@
+[1mdiff --git a/resources/views/bshcase/handle.blade.php b/resources/views/bshcase/handle.blade.php[m
+[1mindex f2682d3..b4b8d1d 100644[m
+[1m--- a/resources/views/bshcase/handle.blade.php[m
+[1m+++ b/resources/views/bshcase/handle.blade.php[m
+[36m@@ -233,9 +233,10 @@[m
+                     <div class="col-xs-12 col-md-12">[m
+                         <div id="map" style="width: 100%; height: 400px"></div>[m
+                         <div id="infowindow-content">[m
+[31m-                          <img src="" width="16" height="16" id="place-icon">[m
+[32m+[m[32m                          <!-- <img src="" width="16" height="16" id="place-icon">[m
+                           <span id="place-name"  class="title"></span><br>[m
+[31m-                          <span id="place-address"></span>[m
+[32m+[m[32m                          <span id="place-address"></span> -->[m
+[32m+[m[32m                          <br>[m
+                         </div>[m
+                     </div>[m
+                 </div>[m
+[36m@@ -753,7 +754,7 @@[m [mvar apiGeolocationSuccess = function(position) {[m
+ };[m
+ [m
+ var tryAPIGeolocation = function() {[m
+[31m-    jQuery.post( "https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyDViaUZiCsi7LfCkwkdpLRT4AmWzWP9CnM", function(success) {[m
+[32m+[m[32m    jQuery.post( "https://www.googleapis.com/geolocation/v1/geolocate?key={{config('app.GOOGLE_API_KEY')}}", function(success) {[m
+         apiGeolocationSuccess({coords: {latitude: success.location.lat, longitude: success.location.lng}});[m
+   })[m
+   .fail(function(err) {[m
