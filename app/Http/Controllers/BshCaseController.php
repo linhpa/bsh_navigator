@@ -42,7 +42,8 @@ class BshCaseController extends Controller
             }
         } else {
             if (isset($request->new) && $request->new == 1) {
-                $cases = BshCase::where('user_id', Auth::user()->id)->where('status', 1)->orWhere('status', null)->orWhere('status', 0)->orderBy('status', 'asc')->orderBy('updated_at', 'desc')->paginate(10);
+                // $cases = BshCase::where('user_id', Auth::user()->id)->where('status', 1)->orWhere('status', null)->orWhere('status', 0)->orderBy('status', 'asc')->orderBy('updated_at', 'desc')->paginate(10);
+                $cases = BshCase::where('user_id', Auth::user()->id)->whereRaw('(status = 1 or status is null or status = 0)')->orderBy('updated_at', 'desc')->paginate(10);                
             } else {
                 $cases = BshCase::where('user_id', Auth::user()->id)->orderBy('status', 'asc')->orderBy('updated_at', 'desc')->paginate(10);
             }
@@ -212,10 +213,12 @@ class BshCaseController extends Controller
     public function completeCase(Request $request) {
         $case = BshCase::where('id', $request->id)->first();
 
-        $this->saveDoneCase($case);
+        //$this->saveDoneCase($case);
 
         if ($case != null) {
             $case->status = (int)$request->status;
+
+            $this->saveDoneCase($case);
 
             $result = $case->save();
 
