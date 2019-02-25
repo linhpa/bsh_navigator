@@ -397,4 +397,8 @@ class BshCaseController extends Controller
 
         return response()->json(['result' => false]);
     }
+
+    public function confirmTakeCase(Request $request) {
+        
+    }
 }

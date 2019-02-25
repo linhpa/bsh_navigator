@@ -199,7 +199,7 @@ body {
 @endsection
 @section('content')
 <div class="uper">
-    <h2>Case List</h2>
+    <h2 style="text-align: center;">Case List</h2>
     <!-- <table class="table table-bordered">
         <thead>
             <tr>
@@ -254,15 +254,13 @@ body {
                   <div class="grid-image-top new-case">
                   @endif -->
                   <div class="grid-image-top pending-case">
-                    <span class="centered">{{@$case->customer_name}} -- {{@$case->customer_phone}}</span>
+                    <span class="centered">{{@$case->customer_name}} <br> {{@$case->customer_phone}}</span>
                   </div>
                   <div class="grid-item-content">
                     <span class="item-title">Case ID: {{ @$case->id }}</span>
                     <span class="item-category">{{ @$case->description }}</span>
-                    <span class="item-excerpt">Address: {{ @$case->address2 }}</span>
-                    @if (!isset($case->address2))
-                    <span class="item-excerpt">Address: {{ @$case->address1 }}</span>
-                    @endif                    
+                    <span class="item-excerpt">Address 1: {{ @$case->address2 }}</span>                    
+                    <span class="item-excerpt">Address 2: {{ @$case->address1 }}</span>                    
                   </div>
                 </div>
               </div>

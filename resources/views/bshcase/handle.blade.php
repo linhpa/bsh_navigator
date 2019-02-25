@@ -504,7 +504,11 @@
                         </div>
                     </div>
                 </div>
-                <div class="btn-group btn-group-justified" role="group" aria-label="">                   
+                <div class="btn-group btn-group-justified" role="group" aria-label="">
+                    <div class="btn-group btn-group-lg" role="group" aria-label="">
+                        <button class="btn btn-default back" type="button">Back</button>
+                
+                    </div>                   
                     <div class="btn-group btn-group-lg" role="group" aria-label="">
                         <button class="btn btn-primary btn-lg btn-block" id="complete-btn">Complete</button>
                     </div>
