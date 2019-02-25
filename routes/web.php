@@ -82,8 +82,10 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::post('/bsh_cases/sendLocation', 'BshCaseController@sendLocation');
 
 	Route::get('test', 'BshCaseController@test');
+
+	Route::resource('users', 'UserController', ['except' => [
+    	'create', 'store'
+	]]);
 }); 	
-
-
 
 Route::get('/home', 'HomeController@index')->name('home');

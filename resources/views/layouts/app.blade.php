@@ -51,6 +51,9 @@
                             <li><a href="{{ route('login') }}">Login</a></li>
                             <!-- <li><a href="{{ route('register') }}">Register</a></li> -->
                         @else
+                            @if (Auth::user()->role == 'admin')                            
+                            <li><a href="{{ route('users.index') }}">User Management</a></li>
+                            @endif
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                                     {{ Auth::user()->name }} <span class="caret"></span>
@@ -58,6 +61,7 @@
 
                                 <ul class="dropdown-menu" role="menu">
                                     <li>
+                                        <a href="{{ route('users.show', Auth::user()->id) }}">View Profile</a>
                                         <a href="{{ route('change_pw') }}">
                                             Change Password
                                         </a>
@@ -72,10 +76,7 @@
                                         </form>
                                     </li>
                                 </ul>
-                            </li>
-                            @if (Auth::user()->role == 'admin')                            
-                            <li><a href="{{ route('register') }}">Register</a></li>
-                            @endif
+                            </li>                            
                         @endif
                     </ul>
                 </div>

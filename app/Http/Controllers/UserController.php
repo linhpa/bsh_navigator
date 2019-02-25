@@ -18,28 +18,12 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
-    }
+        if (Auth::user()->role != 'admin') {
+            return redirect('/home')->with('error', 'Unauthorized');
+        }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
+        $users = User::paginate(10);
+        return view('user.index', compact('users'));
     }
 
     /**
@@ -48,9 +32,11 @@ class UserController extends Controller
      * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function show(User $user)
+    public function show($id)
     {
-        //
+        $user = User::findOrFail($id);        
+
+        return view('user.show', compact('user'));
     }
 
     /**
@@ -59,9 +45,12 @@ class UserController extends Controller
      * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function edit(User $user)
+    public function edit($id)
     {
-        //
+        $user = User::findOrFail($id);
+        $roles = \DB::table('roles')->get();
+
+        return view('user.edit', compact('user', 'roles'));
     }
 
     /**
@@ -73,7 +62,13 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        //
+        $user->name = $request->get('name');
+        $user->phone = $request->get('phone');
+        $user->role = $request->get('role');
+        $user->gdv_id = $request->get('gdv_id');        
+        $user->save();
+
+        return redirect('users')->with('success', 'User has been updated Successfully');
     }
 
     /**
@@ -84,7 +79,13 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        //
+        if ($user->role == 'admin') {
+            return redirect('users')->with('error', 'Cannot delete admin user');
+        }
+
+        $user->delete();
+
+        return redirect('users')->with('success', 'User has been deleted Successfully');
     }
 
     public function login(Request $request){
