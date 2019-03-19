@@ -47,7 +47,7 @@
                     </table> -->
                     <div class="function-item text-center">                      
                         @if ($data[0]->new > 0) 
-                        <span style="font-size: 15px; float: right;" class="label label-danger label-indicator animation-pulse">{{ $data[0]->new }}</span>
+                        <span style="font-size: 15px; position: absolute; right: 0; top: 0" class="label label-danger label-indicator animation-pulse">{{ $data[0]->new }}</span>
                         @endif
                         <a href="{{ url('bsh_cases?new=1') }}"><img src="{{ asset('images/new_orange.png') }}" height="100px" width="100px"></a>
                         <h4>New Cases</h4>

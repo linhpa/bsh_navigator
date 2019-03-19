@@ -259,8 +259,8 @@ body {
                   <div class="grid-item-content">
                     <span class="item-title">Case ID: {{ @$case->id }}</span>
                     <span class="item-category">{{ @$case->description }}</span>
-                    <span class="item-excerpt">Address 1: {{ @$case->address2 }}</span>                    
-                    <span class="item-excerpt">Address 2: {{ @$case->address1 }}</span>                    
+                    <span class="item-excerpt">Address 1: {{ @$case->address1 }}</span>                    
+                    <span class="item-excerpt">Address 2: {{ @$case->address2 }}</span>                    
                   </div>
                 </div>
               </div>
