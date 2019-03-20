@@ -164,7 +164,7 @@ class BshCaseController extends Controller
         $notiData = [
             'secret_key' => Config::getSecretKey(),
             'gdv_id' => $request->input('gdv_id'),
-            'body' => empty($request->input('address1')) ? $request->input('address1') : $request->input('address2')
+            'body' => !empty($request->input('address1')) ? $request->input('address1') : $request->input('address2')
         ];
 
         $this->pushNoti($notiData);
