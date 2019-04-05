@@ -20,7 +20,8 @@ class BshCaseController extends Controller
     protected $STATUSES = [
         1 => 'New',
         2 => 'Pending',
-        3 => 'Done'
+        3 => 'Done',
+        4 => 'Reject'
     ];
 
     public function __construct(BshCase $bshCase) {        
@@ -38,16 +39,17 @@ class BshCaseController extends Controller
             if (isset($request->new) && $request->new == 1) {
                 $cases = BshCase::where('status', 1)->orWhere('status', null)->orWhere('status', 0)->orderBy('status', 'asc')->orderBy('updated_at', 'desc')->paginate(10);
             } else {
-                $cases = BshCase::find(1)->orderBy('status', 'asc')->orderBy('updated_at', 'desc')->paginate(10);    
+                $cases = BshCase::whereRaw('1')->orderBy('status', 'asc')->orderBy('updated_at', 'desc')->paginate(10);    
             }
+
+            //return view('bshcase.index_admin', compact('cases', 'statuses'));
         } else {
             if (isset($request->new) && $request->new == 1) {
-                // $cases = BshCase::where('user_id', Auth::user()->id)->where('status', 1)->orWhere('status', null)->orWhere('status', 0)->orderBy('status', 'asc')->orderBy('updated_at', 'desc')->paginate(10);
-                $cases = BshCase::where('user_id', Auth::user()->id)->whereRaw('(status = 1 or status is null or status = 0)')->orderBy('updated_at', 'desc')->paginate(10);                
+                $cases = BshCase::where('user_id', Auth::user()->id)->whereRaw('(status = 1 or status is null or status = 0)')->orderBy('updated_at', 'desc')->paginate(10);
             } else {
                 $cases = BshCase::where('user_id', Auth::user()->id)->orderBy('status', 'asc')->orderBy('updated_at', 'desc')->paginate(10);
             }
-        }
+        }        
         
         $statuses = $this->STATUSES;
 
@@ -399,6 +401,52 @@ class BshCaseController extends Controller
     }
 
     public function confirmTakeCase(Request $request) {
-        
+        if (isset($request->gdv_id) && $request->gdv_id != null) {
+            
+            $data = [];
+
+            $data['gdv_id'] = $request->gdv_id;
+            $data['secret_key'] = Config::getSecretKey();
+            $data['case_id'] = $request->case_id;
+
+            try {
+                $client = new Client();            
+
+                $response = $client->post('http://115.146.126.84/api/locationServices/takeCase', [
+                    'form_params' => $data
+                ]);                
+            } catch (RequestException $e) {                
+                return response()->json(['result' => false, 'message' => $e->getMessage()]);
+            }
+
+            return $response->getBody();
+        }
+
+        return response()->json(['result' => false]);
+    }
+
+    public function rejectCase(Request $request) {
+        if (isset($request->gdv_id) && $request->gdv_id != null) {
+            
+            $data = [];
+
+            $data['gdv_id'] = $request->gdv_id;
+            $data['secret_key'] = Config::getSecretKey();
+            $data['case_id'] = $request->case_id;
+
+            try {
+                $client = new Client();            
+
+                $response = $client->post('http://115.146.126.84/api/locationServices/rejectCase', [
+                    'form_params' => $data
+                ]);                
+            } catch (RequestException $e) {                
+                return response()->json(['result' => false, 'message' => $e->getMessage()]);
+            }
+
+            return $response->getBody();
+        }
+
+        return response()->json(['result' => false]);
     }
 }

@@ -81,7 +81,8 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::delete('deleteCasePhoto', 'BshCaseController@destroyPhoto');
 	Route::post('/bsh_cases/sendLocation', 'BshCaseController@sendLocation');
 
-	Route::get('test', 'BshCaseController@test');
+	Route::post('/bsh_cases/takeCase/{id}', 'BshCaseController@confirmTakeCase');
+	Route::post('/bsh_cases/rejectCase/{id}', 'BshCaseController@rejectCase');
 
 	Route::resource('users', 'UserController', ['except' => [
     	'create', 'store'

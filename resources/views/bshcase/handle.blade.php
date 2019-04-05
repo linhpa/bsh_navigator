@@ -233,7 +233,7 @@
                     <div class="col-xs-12 col-md-12">
                         <div id="map" style="width: 100%; height: 400px"></div>
                         <div id="infowindow-content">
-                          <img src="" width="16" height="16" id="place-icon">
+                          <!-- <img src="" width="16" height="16" id="place-icon"> -->
                           <span id="place-name"  class="title"></span><br>
                           <span id="place-address"></span>
                         </div>
@@ -726,7 +726,7 @@ var apiGeolocationSuccess = function(position) {
 
     window.customerLocation = new google.maps.LatLng(parseFloat({{ @$case->lat2 }}), parseFloat({{ @$case->lng2 }}))
 
-    @if (!isset($case->lat2) || $case->lat2 == null) 
+    @if ((!isset($case->lat2) || $case->lat2 == null) && (isset($case->lat1) && $case->lat1 != null))
     markers.push(new google.maps.Marker({          
         icon: '{{ asset('images/cust_location.png') }}',
         title: 'Customer Position 1',
@@ -801,24 +801,24 @@ if ("{{ !Auth::guest() }}" == "1") {
     window.intervalGetLocation = setInterval(getGDVLocation, 10 * 1000)
 }     
 
-$.post({
-    url: '{{ url('bsh_cases/getGDVLocation') }}',
-    dataType: 'json',
-    data: {
-        _token: '{{ csrf_token() }}',
-        gdv_id: '{{ @$case->user->gdv_id }}',            
-    },
-    success: (data) => {
-        if (data.data) {
-            let position = data.data.position
-            apiGeolocationSuccess(position)
-            checkDistance(position.coords.latitude, position.coords.longitude)
-        }
-    },
-    error: (xhr) => {
-        alert('Error')
-    }
-})
+// $.post({
+//     url: '{{ url('bsh_cases/getGDVLocation') }}',
+//     dataType: 'json',
+//     data: {
+//         _token: '{{ csrf_token() }}',
+//         gdv_id: '{{ @$case->user->gdv_id }}',            
+//     },
+//     success: (data) => {
+//         if (data.data) {
+//             let position = data.data.position
+//             apiGeolocationSuccess(position)
+//             checkDistance(position.coords.latitude, position.coords.longitude)
+//         }
+//     },
+//     error: (xhr) => {
+//         console.log(xhr)
+//     }
+// })
 
 function getGDVLocation() {
     $.post({
@@ -837,10 +837,12 @@ function getGDVLocation() {
             }
         },
         error: (xhr) => {
-            alert('Error')
+            console.log(xhr)
         }
     })
 }
+
+getGDVLocation()
 
 function updateGDVMarker(position) {
     let lat = position.coords.latitude, lng = position.coords.longitude
