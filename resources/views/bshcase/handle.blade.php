@@ -834,7 +834,7 @@ function getGDVLocation() {
         success: (data) => {
             if (data.data) {
                 let position = data.data.position
-                //apiGeolocationSuccess(position)
+                apiGeolocationSuccess(position)
                 checkDistance(position.coords.latitude, position.coords.longitude)
                 updateGDVMarker(position)
             }
@@ -867,14 +867,14 @@ function updateGDVMarker(position) {
 
 function checkDistance(lat, lng) {
     let gdvPos = new google.maps.LatLng(parseFloat(lat), parseFloat(lng))
-    distance = google.maps.geometry.spherical.computeDistanceBetween(gdvPos, customerLocation)
+    distance = google.maps.geometry.spherical.computeDistanceBetween(gdvPos, window.customerLocation)
 
     if (distance <= 200) {
         $("#confirmArrived").css('display', 'block');        
 
         let data = {
             _token: "{{ csrf_token() }}"
-            
+
         }
 
         $.ajax({

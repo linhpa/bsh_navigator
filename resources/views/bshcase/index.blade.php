@@ -337,6 +337,53 @@ body {
 
               </div>
             </div>
+            <script type="text/javascript">
+                function takeCase(caseId) {
+                    if (!caseId) {
+                        return 
+                    }
+
+                    let data = {
+                        _token: "{{ csrf_token() }}",
+                        case_id: caseId
+                    }
+
+                    $.ajax({
+                        method: "POST",
+                        url: "{{ url('bsh_cases/takeCase', @$case->id) }}",
+                        data: data,
+                        success: (data) => {
+                            window.location = "{{ url('bsh_cases/handle', @$case->id) }}"
+                        },
+                        error: (e) => {
+                            console.log(e)
+                        }
+                    })
+                }
+
+                function rejectCase(caseId) {
+                    if (!caseId) {
+                        return 
+                    }
+
+                    let data = {
+                        _token: "{{ csrf_token() }}",
+                        case_id: caseId
+                    }
+
+                    $.ajax({
+                        method: "POST",
+                        url: "{{ url('bsh_cases/rejectCase', @$case->id) }}",
+                        data: data,
+                        success: (data) => {
+                            window.location = "{{ route('bsh_cases.index', array('new', 1)) }}"
+                        },
+                        error: (e) => {
+                            console.log(e)
+                        }
+                    })
+                }
+            </script>
             @endforeach
           </div>
         </div>
@@ -350,51 +397,5 @@ body {
 @endsection
 
 @section('javascript')
-<script type="text/javascript">
-    function takeCase(caseId) {
-        if (!caseId) {
-            return 
-        }
 
-        let data = {
-            _token: "{{ csrf_token() }}",
-            case_id: caseId
-        }
-
-        $.ajax({
-            method: "POST",
-            url: "{{ url('bsh_cases/takeCase', @$case->id) }}",
-            data: data,
-            success: (data) => {
-                window.location = "{{ url('bsh_cases/handle', @$case->id) }}"
-            },
-            error: (e) => {
-                console.log(e)
-            }
-        })
-    }
-
-    function rejectCase(caseId) {
-        if (!caseId) {
-            return 
-        }
-
-        let data = {
-            _token: "{{ csrf_token() }}",
-            case_id: caseId
-        }
-
-        $.ajax({
-            method: "POST",
-            url: "{{ url('bsh_cases/rejectCase', @$case->id) }}",
-            data: data,
-            success: (data) => {
-                window.location = "{{ route('bsh_cases.index', array('new', 1)) }}"
-            },
-            error: (e) => {
-                console.log(e)
-            }
-        })
-    }
-</script>
 @endsection
