@@ -804,24 +804,24 @@ if ("{{ !Auth::guest() }}" == "1") {
     window.intervalGetLocation = setInterval(getGDVLocation, 10 * 1000)
 }     
 
-// $.post({
-//     url: '{{ url('bsh_cases/getGDVLocation') }}',
-//     dataType: 'json',
-//     data: {
-//         _token: '{{ csrf_token() }}',
-//         gdv_id: '{{ @$case->user->gdv_id }}',            
-//     },
-//     success: (data) => {
-//         if (data.data) {
-//             let position = data.data.position
-//             apiGeolocationSuccess(position)
-//             checkDistance(position.coords.latitude, position.coords.longitude)
-//         }
-//     },
-//     error: (xhr) => {
-//         console.log(xhr)
-//     }
-// })
+$.post({
+    url: '{{ url('bsh_cases/getGDVLocation') }}',
+    dataType: 'json',
+    data: {
+        _token: '{{ csrf_token() }}',
+        gdv_id: '{{ @$case->user->gdv_id }}',            
+    },
+    success: (data) => {
+        if (data.data) {
+            let position = data.data.position
+            apiGeolocationSuccess(position)
+            checkDistance(position.coords.latitude, position.coords.longitude)
+        }
+    },
+    error: (xhr) => {
+        console.log(xhr)
+    }
+})
 
 function getGDVLocation() {
     $.post({
@@ -834,7 +834,7 @@ function getGDVLocation() {
         success: (data) => {
             if (data.data) {
                 let position = data.data.position
-                apiGeolocationSuccess(position)
+                //apiGeolocationSuccess(position)
                 checkDistance(position.coords.latitude, position.coords.longitude)
                 updateGDVMarker(position)
             }
