@@ -21,7 +21,7 @@ class BshCaseController extends Controller
         1 => 'New',
         2 => 'Pending',
         3 => 'Done',
-        4 => 'Reject'
+        4 => 'Rejected'
     ];
 
     public function __construct(BshCase $bshCase) {        
@@ -400,7 +400,19 @@ class BshCaseController extends Controller
         return response()->json(['result' => false]);
     }
 
+    public function agentConfirmArrived(Request $request, $id) {
+        $case = BshCase::where('id', $id)->firstOrFail();
+        $case->agent_arrived = true;
+        $case->save();
+
+        return response()->json(['result' => true, 'message' => 'Successful']);
+    }
+
     public function confirmTakeCase(Request $request) {
+        $case = BshCase::where('id', $request->case_id)->first();
+        $case->status = 2;
+        $case->save();
+
         if (isset($request->gdv_id) && $request->gdv_id != null) {
             
             $data = [];
@@ -426,6 +438,10 @@ class BshCaseController extends Controller
     }
 
     public function rejectCase(Request $request) {
+        $case = BshCase::where('id', $request->case_id)->first();
+        $case->status = 4;
+        $case->save();
+
         if (isset($request->gdv_id) && $request->gdv_id != null) {
             
             $data = [];

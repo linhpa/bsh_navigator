@@ -498,6 +498,9 @@
                             <select id="status" name="status" title="Status" class="form-control  input-lg validate-select required-entry" defaultvalue="">
                                 <option value="">-- Select Status --</option>
                                 @foreach ($statuses as $key => $status)
+                                    @if ($key == 1 || $key == 4)
+                                        continue;
+                                    @endif
                                 <option value="{{ $key }}" {{ $case->status == $key ? 'selected' : '' }}>{{ @$status }}</option>
                                 @endforeach                                
                             </select>
@@ -868,6 +871,23 @@ function checkDistance(lat, lng) {
 
     if (distance <= 200) {
         $("#confirmArrived").css('display', 'block');        
+
+        let data = {
+            _token: "{{ csrf_token() }}"
+            
+        }
+
+        $.ajax({
+            method: "POST",
+            url: "{{ url('bsh_cases/agent_confirm_arrived', $case->id) }}",
+            data: data,
+            success: (e) => {
+
+            },
+            error: (xhr) => {
+
+            }
+        })
     }
 }
 

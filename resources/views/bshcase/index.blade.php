@@ -122,7 +122,7 @@ body {
 }
 
 .item-title {
-  font-size: 24px;
+  font-size: 20px;
   line-height: 26px;
   font-weight: 700;
   margin-bottom: 18px;
@@ -134,12 +134,31 @@ body {
   display: block;
   margin-bottom: 20px;
   font-size: 14px;
+  -o-text-overflow: ellipsis;   /* Opera */
+    text-overflow:    ellipsis;   /* IE, Safari (WebKit) */
+    overflow:hidden;              /* don't show excess chars */
+    white-space:nowrap;           /* force single line */
+    width: 300px;                 /* fixed width */
 }
 
 .item-excerpt {
-  margin-bottom: 20px;
-  display: block;
-  font-size: 14px;
+    margin-bottom: 20px;
+    display: block;
+    font-size: 14px;
+  
+    -o-text-overflow: ellipsis;   /* Opera */
+    text-overflow:    ellipsis;   /* IE, Safari (WebKit) */
+    overflow:hidden;              /* don't show excess chars */
+    white-space:nowrap;           /* force single line */
+    width: 300px;                 /* fixed width */
+}
+
+.customer-name-box {
+    -o-text-overflow: ellipsis;   /* Opera */
+    text-overflow:    ellipsis;   /* IE, Safari (WebKit) */
+    overflow:hidden;              /* don't show excess chars */
+    white-space:nowrap;           /* force single line */
+    width: 300px;                 /* fixed width */   
 }
 
 .more-info {
@@ -193,6 +212,25 @@ body {
   .grid-item {
     flex-basis: 100%;
   }
+}
+
+.modal {
+  text-align: center;
+}
+
+@media screen and (min-width: 768px) { 
+  .modal:before {
+    display: inline-block;
+    vertical-align: middle;
+    content: " ";
+    height: 100%;
+  }
+}
+
+.modal-dialog {
+  display: inline-block;
+  text-align: left;
+  vertical-align: middle;
 }
 
 </style>
@@ -255,14 +293,18 @@ body {
                   <div class="grid-image-top new-case">
                   @endif -->
                   <div class="grid-image-top pending-case">
-                    <span class="centered">{{@$case->customer_name}} <br> {{@$case->customer_phone}}</span>
+                    <span class="centered customer-name-box">{{@$case->customer_name}} <br> {{@$case->customer_phone}}</span>
                   </div>
                   <div class="grid-item-content">
-                    <span class="item-title">Case ID: {{ @$case->id }}</span>
+                    <span class="item-title">Case ID: {{ @$case->id }} -- {{ @$statuses[@$case->status] }}</span>
                     <span class="item-category">{{ @$case->description }}</span>
                     <span class="item-excerpt">Address 1: {{ @$case->address1 }}</span>                    
                     <span class="item-excerpt">Address 2: {{ @$case->address2 }}</span>                    
+                    @if ($case->status == null || $case->status == 1 || $case->status == 4)
                     <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#takeCaseModal">Take/Reject Case</button>
+                    @else
+                    <a href="{{ url('bsh_cases/handle', $case->id)}}"><button type="button" class="btn btn-info btn-lg">Edit Case</button></a>
+                    @endif
                   </div>
                   
                 </div>
@@ -290,17 +332,17 @@ body {
       </div>
       <div class="modal-body">
         <p><strong>Do you want to take this case?</strong></p>
-        <span class="item-category"><strong>Case ID: {{ @$case->id }}</strong></span>
-        <span class="item-category">{{ @$case->description }}</span>
-        <span class="item-excerpt">Address 1: {{ @$case->address1 }}</span>                    
-        <span class="item-excerpt">Address 2: {{ @$case->address2 }}</span>
+        <p class=""><strong>Case ID: {{ @$case->id }}</strong></p>
+        <p class="">Description: {{ @$case->description }}</p>
+        <p class="">Address 1: {{ @$case->address1 }}</p>                    
+        <p class="">Address 2: {{ @$case->address2 }}</p>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-success" onclick="takeCase({{ @$case->id }})">Take</button>
         <button type="button" class="btn btn-danger" onclick="rejectCase({{ @$case->id }})">Reject</button>
-        @if ($case->status != null || $case->status != '1')
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        @endif
+        <div class="centered">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>        
       </div>
     </div>
 
@@ -320,13 +362,12 @@ body {
             case_id: caseId
         }
 
-
         $.ajax({
             method: "POST",
-            url: "{{ url('bsh_cases/takeCase', $case->id) }}",
+            url: "{{ url('bsh_cases/takeCase', @$case->id) }}",
             data: data,
             success: (data) => {
-                window.location = "{{ url('bsh_cases/handle', $case->id) }}"
+                window.location = "{{ url('bsh_cases/handle', @$case->id) }}"
             },
             error: (e) => {
                 console.log(e)
@@ -344,10 +385,9 @@ body {
             case_id: caseId
         }
 
-
         $.ajax({
             method: "POST",
-            url: "{{ url('bsh_cases/rejectCase', $case->id) }}",
+            url: "{{ url('bsh_cases/rejectCase', @$case->id) }}",
             data: data,
             success: (data) => {
                 window.location = "{{ route('bsh_cases.index', array('new', 1)) }}"

@@ -80,6 +80,7 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::post('/bsh_cases/uploadPhotos', 'BshCaseController@uploadPhotos');
 	Route::delete('deleteCasePhoto', 'BshCaseController@destroyPhoto');
 	Route::post('/bsh_cases/sendLocation', 'BshCaseController@sendLocation');
+	Route::post('/bsh_cases/agent_confirm_arrived/{id}', 'BshCaseController@agentConfirmArrived');
 
 	Route::post('/bsh_cases/takeCase/{id}', 'BshCaseController@confirmTakeCase');
 	Route::post('/bsh_cases/rejectCase/{id}', 'BshCaseController@rejectCase');
