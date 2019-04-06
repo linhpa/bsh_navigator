@@ -301,13 +301,40 @@ body {
                     <span class="item-excerpt">Address 1: {{ @$case->address1 }}</span>                    
                     <span class="item-excerpt">Address 2: {{ @$case->address2 }}</span>                    
                     @if ($case->status == null || $case->status == 1 || $case->status == 4)
-                    <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#takeCaseModal">Take/Reject Case</button>
+                    <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#takeCaseModal-{{ @$case->id }}">Take/Reject Case</button>
                     @else
                     <a href="{{ url('bsh_cases/handle', $case->id)}}"><button type="button" class="btn btn-info btn-lg">Edit Case</button></a>
                     @endif
                   </div>
                   
                 </div>
+              </div>
+            </div>
+
+            <!-- Modal -->
+            <div id="takeCaseModal-{{ @$case->id }}" class="modal fade" role="dialog">
+              <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Case ID: {{ @$case->id }}</h4>
+                  </div>
+                  <div class="modal-body">
+                    <p><strong>Do you want to take this case?</strong></p>
+                    <p class=""><strong>Case ID: {{ @$case->id }}</strong></p>
+                    <p class="">Description: {{ @$case->description }}</p>
+                    <p class="">Address 1: {{ @$case->address1 }}</p>                    
+                    <p class="">Address 2: {{ @$case->address2 }}</p>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-success" onclick="takeCase({{ @$case->id }})">Take</button>
+                    <button type="button" class="btn btn-danger" onclick="rejectCase({{ @$case->id }})">Reject</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                  </div>
+                </div>
+
               </div>
             </div>
             @endforeach
@@ -320,34 +347,6 @@ body {
     </div>
 </div>
 
-<!-- Modal -->
-<div id="takeCaseModal" class="modal fade" role="dialog">
-  <div class="modal-dialog">
-
-    <!-- Modal content-->
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Case ID: {{ @$case->id }}</h4>
-      </div>
-      <div class="modal-body">
-        <p><strong>Do you want to take this case?</strong></p>
-        <p class=""><strong>Case ID: {{ @$case->id }}</strong></p>
-        <p class="">Description: {{ @$case->description }}</p>
-        <p class="">Address 1: {{ @$case->address1 }}</p>                    
-        <p class="">Address 2: {{ @$case->address2 }}</p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-success" onclick="takeCase({{ @$case->id }})">Take</button>
-        <button type="button" class="btn btn-danger" onclick="rejectCase({{ @$case->id }})">Reject</button>
-        <div class="centered">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>        
-      </div>
-    </div>
-
-  </div>
-</div>
 @endsection
 
 @section('javascript')
