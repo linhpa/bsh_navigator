@@ -279,7 +279,7 @@
                     
                         
                         <div class="col-xs-12 col-md-12" style="margin-bottom: 20px">
-                            <form id="form-files1" name="form-files1" action="{{ url('bsh_cases/uploadPhotos') }}" method="post" enctype="multipart/form-data">
+                            <form class="upload-photo-form" id="form-files1" name="form-files1" action="{{ url('bsh_cases/uploadPhotos') }}" method="post" enctype="multipart/form-data">
                                 {{ csrf_field() }}
                                 <input type="hidden" name="case_id" value="{{ @$case->id }}">
                                 <input type="hidden" name="type" value="1">
@@ -319,7 +319,7 @@
                         </div>
                     
                         <div class="col-xs-12 col-md-12" style="margin-bottom: 20px">
-                            <form id="form-files2" name="form-files2" action="{{ url('bsh_cases/uploadPhotos') }}" method="post" enctype="multipart/form-data">
+                            <form class="upload-photo-form" id="form-files2" name="form-files2" action="{{ url('bsh_cases/uploadPhotos') }}" method="post" enctype="multipart/form-data">
                                 {{ csrf_field() }}
                                 <input type="hidden" name="case_id" value="{{ @$case->id }}">
                                 <input type="hidden" name="type" value="2">
@@ -359,7 +359,7 @@
                         </div>
                                             
                         <div class="col-xs-12 col-md-12" style="margin-bottom: 20px">
-                            <form id="form-files3" name="form-files3" action="{{ url('bsh_cases/uploadPhotos') }}" method="post" enctype="multipart/form-data">
+                            <form class="upload-photo-form" id="form-files3" name="form-files3" action="{{ url('bsh_cases/uploadPhotos') }}" method="post" enctype="multipart/form-data">
                                 {{ csrf_field() }}
                                 <input type="hidden" name="case_id" value="{{ @$case->id }}">
                                 <input type="hidden" name="type" value="3">
@@ -542,6 +542,10 @@
         });
     })
 
+    $(".upload-photo-form").on('submit', () => {
+        $("body").LoadingOverlay("show")
+    })
+
     $("#info-form").on('submit', (e) => {
         e.preventDefault()
 
@@ -560,15 +564,17 @@
                 note: $('textarea[name="note"]').val(),
             },
             beforeSend: () => {
-
+                $("body").LoadingOverlay("show")
             },
             success: (data) => {
+                $("body").LoadingOverlay("hide")
                 if (data.result) {
                     alert('Save successfully');
                 }
             },
             error: (xhr) => {
-                alert('Error');
+                $("body").LoadingOverlay("hide")
+                alert('Error. Try again');
             }
         })        
 
@@ -679,7 +685,7 @@
                 }                
             },
             error: (xhr) => {
-                alert('Error..!!');
+                alert('Error. Try again');
             }
         })
     })
@@ -699,7 +705,7 @@
                 }                
             },
             error: (xhr) => {
-                alert('Error')
+                alert('Error. Try again')
             }
         })
     })

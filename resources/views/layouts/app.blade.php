@@ -88,6 +88,7 @@
     <!-- Scripts -->    
     <script src="{{ asset('/js/app.js') }}"></script>    
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDViaUZiCsi7LfCkwkdpLRT4AmWzWP9CnM&libraries=places,geometry&callback=initAutocomplete" async defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/gasparesganga-jquery-loading-overlay@2.1.6/dist/loadingoverlay.min.js"></script>
     <script type="text/javascript">
         var initAutocomplete = function () {}
     </script>
