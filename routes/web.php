@@ -82,8 +82,8 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::post('/bsh_cases/sendLocation', 'BshCaseController@sendLocation');
 	Route::post('/bsh_cases/agent_confirm_arrived/{id}', 'BshCaseController@agentConfirmArrived');
 
-	Route::post('/bsh_cases/takeCase/{id}', 'BshCaseController@confirmTakeCase');
-	Route::post('/bsh_cases/rejectCase/{id}', 'BshCaseController@rejectCase');
+	Route::post('/bsh_cases/takeCase', 'BshCaseController@confirmTakeCase');
+	Route::post('/bsh_cases/rejectCase', 'BshCaseController@rejectCase');
 
 	Route::resource('users', 'UserController', ['except' => [
     	'create', 'store'

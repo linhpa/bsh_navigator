@@ -277,7 +277,7 @@ class BshCaseController extends Controller
     protected function callApiSendLocation($data) {
         $client = new Client();
 
-        $response = $client->post('http://115.146.126.84/api/locationServices/pushGDVLocation', [
+        $response = $client->post(config('app.api_4x') . 'pushGDVLocation', [
             'form_params' => $data
         ]);
 
@@ -285,7 +285,7 @@ class BshCaseController extends Controller
 
         // $curl = curl_init();
         // curl_setopt_array($curl, array(
-        //     CURLOPT_URL => 'http://115.146.126.84/api/locationServices/pushGDVLocation',
+        //     CURLOPT_URL => config('app.api_4x') . 'pushGDVLocation',
         //     CURLOPT_RETURNTRANSFER => true,
         //     CURLOPT_ENCODING => "",
         //     CURLOPT_MAXREDIRS => 10,
@@ -337,7 +337,7 @@ class BshCaseController extends Controller
     protected function pushNoti($data) {
         $client = new Client();
 
-        $response = $client->post('http://115.146.126.84/api/locationServices/pushNoti', [
+        $response = $client->post(config('app.api_4x') . 'pushNoti', [
             'form_params' => $data
         ]);
 
@@ -369,7 +369,7 @@ class BshCaseController extends Controller
 
         $client = new Client();
 
-        $response = $client->post('http://115.146.126.84/api/locationServices/saveDoneCase', [
+        $response = $client->post(config('app.api_4x') . 'saveDoneCase', [
             'form_params' => $data
         ]);
 
@@ -387,7 +387,7 @@ class BshCaseController extends Controller
             try {
                 $client = new Client();            
 
-                $response = $client->post('http://115.146.126.84/api/locationServices/getGDVLocation', [
+                $response = $client->post(config('app.api_4x') . 'getGDVLocation', [
                     'form_params' => $data
                 ]);                
             } catch (RequestException $e) {                
@@ -413,18 +413,18 @@ class BshCaseController extends Controller
         $case->status = 2;
         $case->save();
 
-        if (isset($request->gdv_id) && $request->gdv_id != null) {
+        if (isset($request->case_id) && $request->case_id != null) {
             
             $data = [];
 
-            $data['gdv_id'] = $request->gdv_id;
+            //$data['gdv_id'] = $request->gdv_id;
             $data['secret_key'] = Config::getSecretKey();
-            $data['case_id'] = $request->case_id;
+            $data['case_id'] = $case->case_id;
 
             try {
                 $client = new Client();            
 
-                $response = $client->post('http://115.146.126.84/api/locationServices/takeCase', [
+                $response = $client->post(config('app.api_4x') . 'takeCase', [
                     'form_params' => $data
                 ]);                
             } catch (RequestException $e) {                
@@ -442,18 +442,19 @@ class BshCaseController extends Controller
         $case->status = 4;
         $case->save();
 
-        if (isset($request->gdv_id) && $request->gdv_id != null) {
+        if (isset($request->case_id) && $request->case_id != null) {
             
             $data = [];
 
-            $data['gdv_id'] = $request->gdv_id;
+            //$data['gdv_id'] = $request->gdv_id;
             $data['secret_key'] = Config::getSecretKey();
-            $data['case_id'] = $request->case_id;
+            $data['case_id'] = $case->case_id;
+            $data['rejection_reason'] = $request->rejection_reason;
 
             try {
                 $client = new Client();            
 
-                $response = $client->post('http://115.146.126.84/api/locationServices/rejectCase', [
+                $response = $client->post(config('app.api_4x') . 'rejectCase', [
                     'form_params' => $data
                 ]);                
             } catch (RequestException $e) {                

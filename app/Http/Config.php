@@ -9,9 +9,9 @@ class Config {
 	}
 
 	public static function getSecretKey() {
-		$config = DB::table('config')->get();
+		$config = DB::table('config')->where('key', '=', 'secret_key')->first();
 
-        return $config[0]->secret_key;
+        return $config->value;
 	}
 }
 ?>

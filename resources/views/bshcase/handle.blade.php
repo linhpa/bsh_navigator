@@ -241,7 +241,7 @@
                 </div>
                 <div class="row">
                     <div class="col-xs-12">
-                        <button class="btn btn-primary btn-lg btn-block next" id="confirmArrived" style="display: none">Confirm Arrival<!-- <span class="glyphicon glyphicon-chevron-right"></span> --></button>
+                        <button class="btn btn-primary btn-lg btn-block next" id="confirmArrived" style="">Confirm Arrival<!-- <span class="glyphicon glyphicon-chevron-right"></span> --></button>
                     </div>
                 </div>
             </div>
@@ -498,10 +498,9 @@
                             <select id="status" name="status" title="Status" class="form-control  input-lg validate-select required-entry" defaultvalue="">
                                 <option value="">-- Select Status --</option>
                                 @foreach ($statuses as $key => $status)
-                                    @if ($key == 1 || $key == 4)
-                                        continue;
-                                    @endif
-                                <option value="{{ $key }}" {{ $case->status == $key ? 'selected' : '' }}>{{ @$status }}</option>
+                                    @if ($key != 1 && $key != 4)
+                                    <option value="{{ $key }}" {{ $case->status == $key ? 'selected' : '' }}>{{ @$status }}</option>       
+                                    @endif                                
                                 @endforeach                                
                             </select>
                         </div>

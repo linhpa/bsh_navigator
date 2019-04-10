@@ -15,7 +15,8 @@
     <link href="{{ asset('/css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('/css/imageviewer.css') }}" rel="stylesheet">
     <!-- <link href="{{ asset('/css/bootstrap.min.css') }}" rel="stylesheet"> -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">        
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="{{ asset('/css/ledlight.css') }}" rel="stylesheet">
 </head>
 @yield('css')
 <body>
@@ -36,6 +37,13 @@
                     <a class="navbar-brand" href="{{ url('/home') }}">
                         {{ config('app.name', 'Laravel') }}
                     </a>
+                    @if (!Auth::guest())
+                        @if (Auth::user()->getAvailability() == 1)
+                        <div class="green led" style="float: right;"></div>
+                        @else
+                        <div class="red led"></div>
+                        @endif
+                    @endif
                 </div>
 
                 <div class="collapse navbar-collapse" id="app-navbar-collapse">

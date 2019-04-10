@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Redis;
 
 class User extends Authenticatable
 {
@@ -33,5 +34,9 @@ class User extends Authenticatable
 
     public function cases() {
         return $this->hasMany('App\Case');
+    }
+
+    public function getAvailability() {
+        return Redis::get("users:" . $this->id);
     }
 }
