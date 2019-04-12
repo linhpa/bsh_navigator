@@ -12,6 +12,8 @@ use \DB;
 use GuzzleHttp;
 use GuzzleHttp\Client;
 use App\Http\Config;
+use Illuminate\Support\Facades\Redis;
+use App\Http\UserHelper;
 
 class BshCaseController extends Controller
 {
@@ -174,7 +176,11 @@ class BshCaseController extends Controller
         return response()->json(['result' => $result]);
     }
 
-    public function showHandleCase($id) {
+    public function showHandleCase($id, $is_edit = false) {
+        if (!$is_edit) {
+            Redis::SET("users:" . Auth::user()->id, 0);
+        }
+
         $case = BshCase::where('id', $id)->first();
 
         $photos1 = DB::table('case_photos')->where(['case_id' => $case->id, 'type' => 1])->get();
@@ -373,6 +379,8 @@ class BshCaseController extends Controller
             'form_params' => $data
         ]);
 
+        Redis::SET("users:" . Auth::user()->id, 1);
+
         return response()->json(['result' => $response]);
     }
 
@@ -412,6 +420,11 @@ class BshCaseController extends Controller
         $case = BshCase::where('id', $request->case_id)->first();
         $case->status = 2;
         $case->save();
+
+        Redis::SET("users:" . Auth::user()->id, 0);
+        //sync user status with 4x server
+        $expire = config('session.lifetime') * 60;
+        UserHelper::updateUserStatus(Auth::user(), true, time() + $expire);
 
         if (isset($request->case_id) && $request->case_id != null) {
             

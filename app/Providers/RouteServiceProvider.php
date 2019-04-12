@@ -26,6 +26,10 @@ class RouteServiceProvider extends ServiceProvider
         //
 
         parent::boot();
+
+        $url = $this->app['url'];
+        // Force the application URL
+        $url->forceRootUrl(config('app.url'));
     }
 
     /**

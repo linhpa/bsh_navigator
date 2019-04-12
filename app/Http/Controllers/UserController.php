@@ -8,6 +8,8 @@ use JWTAuth;
 use JWTAuthException;
 use Hash;
 use Auth;
+use Illuminate\Support\Facades\Redis;
+use App\Http\Config;
 
 class UserController extends Controller
 {

@@ -41,7 +41,7 @@
                         @if (Auth::user()->getAvailability() == 1)
                         <div class="green led" style="float: right;"></div>
                         @else
-                        <div class="red led"></div>
+                        <div class="red led" style="float: right;"></div>
                         @endif
                     @endif
                 </div>

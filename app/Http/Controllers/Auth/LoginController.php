@@ -8,6 +8,7 @@ use App\Http\Controllers\Auth\mAuthenticatesUsers;
 use Auth;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Http\Request;
+use App\Http\UserHelper;
 
 class LoginController extends Controller
 {
@@ -52,6 +53,9 @@ class LoginController extends Controller
         Redis::SET('users:' . $id, 1);
         Redis::EXPIRE('users:' . $id, $expire);
 
+        //sync user status with 4x server
+        UserHelper::updateUserStatus($user, true, time() + $expire);
+
         return redirect('/home');
     }
 
@@ -61,6 +65,9 @@ class LoginController extends Controller
         // Deleting user from redis database when they log out
         $id = Auth::user()->id;
         Redis::DEL('users:'.$id);
+
+        //sync user status with 4x server
+        UserHelper::updateUserStatus(Auth::user(), false);
 
         $this->guard()->logout();
 

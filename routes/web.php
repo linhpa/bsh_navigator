@@ -71,7 +71,7 @@ Route::group(['middleware' => ['auth']], function () {
 	]);	
 
 	Route::resource('bsh_cases', 'BshCaseController');
-	Route::get('/bsh_cases/handle/{id}', 'BshCaseController@showHandleCase');
+	Route::get('/bsh_cases/handle/{id}/{is_edit?}', 'BshCaseController@showHandleCase');
 	Route::post('/bsh_cases/handle/', ['uses' => 'BshCaseController@handleCase', 'as' => 'bsh_cases.save']);
 
 	Route::post('/bsh_cases/getGDVLocation/', 'BshCaseController@getGDVLocation');
