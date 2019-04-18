@@ -171,7 +171,7 @@ class BshCaseController extends Controller
             'body' => !empty($request->input('address1')) ? $request->input('address1') : $request->input('address2')
         ];
 
-        $this->pushNoti($notiData);
+        //$this->pushNoti($notiData);
         
         return response()->json(['result' => $result]);
     }

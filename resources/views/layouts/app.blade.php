@@ -107,19 +107,19 @@
             window.current_lat = position.coords.latitude
             window.current_lng = position.coords.longitude   
 
-            $.post({
-                url: "{{ url('bsh_cases/sendLocation') }}",                
-                data: {
-                    _token: "{{ csrf_token() }}",
-                    position: position, 
-                    gdv_id: "{{ isset(Auth::user()->gdv_id) ? Auth::user()->gdv_id : '' }}"
-                }, 
-                success: function (data) {                    
-                }
-            })
-            .fail(function(err) {
-                console.log('ajax failed')
-            })
+            // $.post({
+            //     url: "{{ url('bsh_cases/sendLocation') }}",                
+            //     data: {
+            //         _token: "{{ csrf_token() }}",
+            //         position: position, 
+            //         gdv_id: "{{ isset(Auth::user()->gdv_id) ? Auth::user()->gdv_id : '' }}"
+            //     }, 
+            //     success: function (data) {                    
+            //     }
+            // })
+            // .fail(function(err) {
+            //     console.log('ajax failed')
+            // })
         };
 
         var _tryAPIGeolocation = function() {
