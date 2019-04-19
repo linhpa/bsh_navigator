@@ -303,7 +303,7 @@ body {
                     @if ($case->status == null || $case->status == 1 || $case->status == 4)
                     <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#takeCaseModal-{{ @$case->id }}">Take/Reject Case</button>
                     @else
-                    <a href="{{ url('bsh_cases/handle', $case->id, true)}}"><button type="button" class="btn btn-info btn-lg">Edit Case</button></a>
+                    <a href="{{ url('bsh_cases/handle', $case->id)}}"><button type="button" class="btn btn-info btn-lg">Edit Case</button></a>
                     @endif
                   </div>
                   

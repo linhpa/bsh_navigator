@@ -176,10 +176,10 @@ class BshCaseController extends Controller
         return response()->json(['result' => $result]);
     }
 
-    public function showHandleCase($id, $is_edit = false) {
-        if (!$is_edit) {
-            Redis::SET("users:" . Auth::user()->id, 0);
-        }
+    public function showHandleCase($id) {
+        // if (!$is_edit) {
+        //     Redis::SET("users:" . Auth::user()->id, 0);
+        // }
 
         $case = BshCase::where('id', $id)->first();
 
