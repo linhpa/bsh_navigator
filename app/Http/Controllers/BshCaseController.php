@@ -65,7 +65,7 @@ class BshCaseController extends Controller
      */
     public function create()
     {
-        
+        return view('bshcase.create');
     }
 
     /**
@@ -76,7 +76,65 @@ class BshCaseController extends Controller
      */
     public function store(Request $request)
     {
-        
+        $result = $this->bshCase->create([
+            'customer_name' => $request->input('customer_name'),
+            'customer_phone' => $request->input('customer_phone'),
+            'user_id' => Auth::user()->id,
+            //'case_id' => $request->input('case_id'),
+            'lat1' => $request->input('lat'),
+            'lng1' => $request->input('lng'),
+            'address1' => $request->input('address'),
+            'lat2' => $request->input('lat'),
+            'lng2' => $request->input('lng'),
+            'address2' => $request->input('address'),
+            'description' => $request->input('description')
+        ]);
+
+        $res = $this->storeCaseTo4xServer($result);
+
+        if (!$res) {
+            $result->delete();
+            return redirect('bsh_cases')->with("error","Cannot synchronize Case to server!");            
+        } else {
+            $result->case_id = $res->_id;
+            $result->save();
+        }
+
+        return redirect('bsh_cases')->with("success", "Case Created Successfully!");  
+    }
+
+    protected function storeCaseTo4xServer(BshCase $case) {
+        if (!$case instanceof BshCase) {
+            return false;
+        }
+
+        $client = new Client();
+
+        $position2 = [
+            'lat' => $case->lat2,
+            'lng' => $case->lng2,
+            'address' => $case->address2
+        ];
+
+        $data = [
+            'case_id' => $case->id,
+            'gdv_id' => $case->user->gdv_id,
+            'customer_phone' => $case->customer_phone,
+            'customer_name' => $case->customer_name,
+            'description' => $case->description,
+            'secret_key' => Config::getSecretKey(),
+            'position2' => $position2
+        ];
+
+        try {
+            $response = $client->post(config('app.api_4x') . 'saveNewCase', [
+                'form_params' => $data
+            ]);    
+
+            return json_decode((string)$response->getBody());
+        } catch (RequestException $e) {
+            return false;
+        }
     }
 
     /**

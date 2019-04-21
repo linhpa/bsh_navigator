@@ -35,13 +35,14 @@
 
                     <!-- Branding Image -->
                     <a class="navbar-brand" href="{{ url('/home') }}">
-                        {{ config('app.name', 'Laravel') }}
+                        <!-- {{ config('app.name', 'Laravel') }} -->
+                        Home
                     </a>
                     @if (!Auth::guest())
                         @if (Auth::user()->getAvailability() == 1)
-                        <div class="green led" style="float: right;"></div>
+                        <div class="green led"></div>
                         @else
-                        <div class="red led" style="float: right;"></div>
+                        <div class="red led"></div>
                         @endif
                     @endif
                 </div>

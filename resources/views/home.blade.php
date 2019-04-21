@@ -45,6 +45,9 @@
                             @endforeach
                         </tbody>
                     </table> -->
+                    <div class="" style="margin-bottom: 15px">
+                      <a href="{{ route('bsh_cases.create') }}"><button class="btn btn-primary"><i class="fa fa-plus"></i> Create New Case</button></a>
+                    </div>
                     <div class="function-item text-center">                      
                         @if ($data[0]->new > 0) 
                         <span style="font-size: 15px; position: absolute; right: 0; top: 0" class="label label-danger label-indicator animation-pulse">{{ $data[0]->new }}</span>
@@ -56,7 +59,7 @@
                     <div class="function-item text-center">
                         <a href="{{ url('bsh_cases') }}"><img src="{{ asset('images/folder-2-xxl.png') }}" height="70px" width="70px"></a>
                         <h4>All Cases</h4>
-                    </div>
+                    </div>                    
                     <!-- <a href="{{ route('bsh_cases.index') }}"><button class="btn btn-primary">Case List</button></a> -->
                 </div>
             </div>

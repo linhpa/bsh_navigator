@@ -288,7 +288,7 @@
                                 <div class="input--file">
                                     <label for="files1">
                                       <span>
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24">
                                           <circle cx="12" cy="12" r="3.2"/>
                                           <path d="M9 2l-1.83 2h-3.17c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2v-12c0-1.1-.9-2-2-2h-3.17l-1.83-2h-6zm3 15c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z"/>
                                           <path d="M0 0h24v24h-24z" fill="none"/>
@@ -299,7 +299,7 @@
                                     <output id="list1" style="margin-bottom: 10px"></output>
                                 </div>
                                 <!-- <input type="file" name="files[]" id="files" multiple accept="image/*" capture="camera"> -->
-                                <input type="submit" value="Upload" name="submit">                    
+                                <!-- <input type="submit" value="Upload" name="submit">                     -->
                             </form>
                         </div>
                       
@@ -328,7 +328,7 @@
                                 <div class="input--file">
                                     <label for="files2">
                                       <span>
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24">
                                           <circle cx="12" cy="12" r="3.2"/>
                                           <path d="M9 2l-1.83 2h-3.17c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2v-12c0-1.1-.9-2-2-2h-3.17l-1.83-2h-6zm3 15c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z"/>
                                           <path d="M0 0h24v24h-24z" fill="none"/>
@@ -339,7 +339,7 @@
                                     <output id="list2" style="margin-bottom: 10px"></output>
                                 </div>
                                 <!-- <input type="file" name="files[]" id="files" multiple accept="image/*" capture="camera"> -->
-                                <input type="submit" value="Upload" name="submit">                    
+                                <!-- <input type="submit" value="Upload" name="submit">                     -->
                             </form>
                         </div>
                         
@@ -368,7 +368,7 @@
                                 <div class="input--file">
                                     <label for="files3">
                                       <span>
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24">
                                           <circle cx="12" cy="12" r="3.2"/>
                                           <path d="M9 2l-1.83 2h-3.17c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2v-12c0-1.1-.9-2-2-2h-3.17l-1.83-2h-6zm3 15c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z"/>
                                           <path d="M0 0h24v24h-24z" fill="none"/>
@@ -379,7 +379,7 @@
                                     <output id="list3" style="margin-bottom: 10px"></output>
                                 </div>
                                 <!-- <input type="file" name="files[]" id="files" multiple accept="image/*" capture="camera"> -->
-                                <input type="submit" value="Upload" name="submit">                    
+                                <!-- <input type="submit" value="Upload" name="submit">                     -->
                             </form>
                         </div>
                         
@@ -613,7 +613,15 @@
         }
     }
 
-    $('.files').on('change', handleFileSelect);
+    //$('.files').on('change', handleFileSelect);
+    $('.files').on('change', uploadPhotos);
+
+    function uploadPhotos(evt) {      
+        let target = evt.target;
+        let form = $(target).closest('form')
+        
+        $(form).submit()
+    }
 
     //old tab handle when redirect back
     $('#tabMenu a[href="#{{ old('tab') }}"]').tab('show')
