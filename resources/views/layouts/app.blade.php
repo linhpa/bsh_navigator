@@ -34,13 +34,15 @@
                     </button>
 
                     <!-- Branding Image -->
+                    <div style="display: inline;">
                     <a class="navbar-brand" href="{{ url('/home') }}">
                         <!-- {{ config('app.name', 'Laravel') }} -->
                         Home
                     </a>
+                    </div>
                     @if (!Auth::guest())
                         @if (Auth::user()->getAvailability() == 1)
-                        <div class="green led"></div>
+                        <div class="green led" style="display: inline;"></div>
                         @else
                         <div class="red led"></div>
                         @endif
