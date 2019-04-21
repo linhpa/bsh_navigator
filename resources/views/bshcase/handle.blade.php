@@ -755,7 +755,7 @@ var apiGeolocationSuccess = function(position) {
     @endif
 
     markers.push(new google.maps.Marker({          
-        icon: 'https://maps.google.com/mapfiles/ms/icons/red-dot.png',
+        icon: "{{ asset('images/red-dot.png') }}",,
         title: 'Current Position',
         position: {lat: current_lat, lng: current_lng},
         map: map
@@ -866,7 +866,7 @@ function updateGDVMarker(position) {
     gdvMarker = window.markers.pop()
     gdvMarker.setMap(null)
     window.markers.push(new google.maps.Marker({          
-        icon: 'https://maps.google.com/mapfiles/ms/icons/red-dot.png',
+        icon: "{{ asset('images/red-dot.png') }}",
         title: 'Current Position',
         position: {lat: lat, lng: lng},
         map: map

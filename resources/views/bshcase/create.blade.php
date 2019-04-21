@@ -114,7 +114,7 @@ initAutocomplete = function() {
         }
 
         markers.push(window.manualMarker = new google.maps.Marker({          
-            icon: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png',
+            icon: "{{ asset('images/green-dot.png') }}",
             title: place.name,
             position: place.geometry.location,
             map: map
