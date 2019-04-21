@@ -33,16 +33,14 @@
                         <span class="icon-bar"></span>
                     </button>
 
-                    <!-- Branding Image -->
-                    <div style="display: inline;">
+                    <!-- Branding Image -->                    
                     <a class="navbar-brand" href="{{ url('/home') }}">
                         <!-- {{ config('app.name', 'Laravel') }} -->
                         Home
-                    </a>
-                    </div>
+                    </a>                    
                     @if (!Auth::guest())
                         @if (Auth::user()->getAvailability() == 1)
-                        <div class="green led" style="display: inline;"></div>
+                        <div class="green led"></div>
                         @else
                         <div class="red led"></div>
                         @endif
