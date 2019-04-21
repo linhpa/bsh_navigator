@@ -12,8 +12,7 @@
 }
 
 
-.led {
-    margin: 10px; float: right !important;    
+.led {    
     border-radius: 5px;
     width: 10px;
     height: 10px;

@@ -40,9 +40,9 @@
                     </a>                    
                     @if (!Auth::guest())
                         @if (Auth::user()->getAvailability() == 1)
-                        <div class="green led"></div>
+                        <div class="green led" style="float: right; margin: 10px;"></div>
                         @else
-                        <div class="red led"></div>
+                        <div class="red led"  style="float: right; margin: 10px;"></div>
                         @endif
                     @endif
                 </div>
