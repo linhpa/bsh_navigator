@@ -523,6 +523,7 @@ class BshCaseController extends Controller
             $data['secret_key'] = Config::getSecretKey();
             $data['case_id'] = $case->case_id;
             $data['rejection_reason'] = $request->rejection_reason;
+            $data['rejection_description'] = $request->rejection_description;
 
             try {
                 $client = new Client();            

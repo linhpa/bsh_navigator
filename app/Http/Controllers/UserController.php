@@ -10,6 +10,7 @@ use Hash;
 use Auth;
 use Illuminate\Support\Facades\Redis;
 use App\Http\Config;
+use App\Http\UserHelper;
 
 class UserController extends Controller
 {
@@ -137,6 +138,9 @@ class UserController extends Controller
         $user = Auth::user();
 
         Redis::SET("users:" . $user->id, $request->availability);
+
+        $expire = config('session.lifetime') * 60;
+        UserHelper::updateUserStatus(Auth::user(), true, time() + $expire);
 
         return response()->json(['succes' => true]);
     }
