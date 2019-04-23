@@ -239,6 +239,8 @@ class BshCaseController extends Controller
         //     Redis::SET("users:" . Auth::user()->id, 0);
         // }
 
+        Redis::SET("users:" . Auth::user()->id, 0);
+
         $case = BshCase::where('id', $id)->first();
 
         $photos1 = DB::table('case_photos')->where(['case_id' => $case->id, 'type' => 1])->get();

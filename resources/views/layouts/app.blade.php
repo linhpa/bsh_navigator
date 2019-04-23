@@ -17,6 +17,7 @@
     <!-- <link href="{{ asset('/css/bootstrap.min.css') }}" rel="stylesheet"> -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="{{ asset('/css/ledlight.css') }}" rel="stylesheet">
+    <link href="{{ asset('/css/bootstrap-toggle.min.css') }}" rel="stylesheet">
 </head>
 @yield('css')
 <body>
@@ -33,18 +34,16 @@
                         <span class="icon-bar"></span>
                     </button>
 
-                    <!-- Branding Image -->                    
-                    <a class="navbar-brand" href="{{ url('/home') }}">
-                        <!-- {{ config('app.name', 'Laravel') }} -->
-                        Home
-                    </a>                    
-                    @if (!Auth::guest())
-                        @if (Auth::user()->getAvailability() == 1)
-                        <div class="green led" style="float: right; margin: 10px;"></div>
-                        @else
-                        <div class="red led"  style="float: right; margin: 10px;"></div>
+                    <!-- Branding Image -->   
+                    <div id="brand-container" style="display: inline-block; margin-top: 5px">                 
+                        <a class="navbar-brand" href="{{ url('/home') }}">
+                            <!-- {{ config('app.name', 'Laravel') }} -->
+                            Home
+                        </a>                    
+                        @if (!Auth::guest())
+                            <input id="toggle-availability" type="checkbox" @if (Auth::user()->getAvailability() == 1) checked @endif data-toggle="toggle">
                         @endif
-                    @endif
+                    </div>
                 </div>
 
                 <div class="collapse navbar-collapse" id="app-navbar-collapse">
@@ -96,12 +95,31 @@
 
     <!-- Scripts -->    
     <script src="{{ asset('/js/app.js') }}"></script>    
+    <script src="{{ asset('/js/bootstrap-toggle.min.js') }}"></script> 
+    <script src="{{ asset('/js/jquery-loading-overlay.min.js') }}"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/gasparesganga-jquery-loading-overlay@2.1.6/dist/loadingoverlay.min.js"></script>
+    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>  -->
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDViaUZiCsi7LfCkwkdpLRT4AmWzWP9CnM&libraries=places,geometry&callback=initAutocomplete" async defer></script>
-    <script src="https://cdn.jsdelivr.net/npm/gasparesganga-jquery-loading-overlay@2.1.6/dist/loadingoverlay.min.js"></script>
     <script type="text/javascript">
         var initAutocomplete = function () {}
     </script>
     <script type="text/javascript">
+        $('#toggle-availability').on('change', (e) => {
+            let data = {
+                _token: "{{ csrf_token() }}",
+                availability : $('#toggle-availability').prop('checked') ? 1 : 0
+            }
+
+            $.ajax({
+                method: "POST",
+                url: "{{ url('setUsersAvailability') }}",
+                data: data,
+                success: (e) => {
+                    //console.log(e)
+                }
+            })
+        })
+
         var _apiGeolocationSuccess = function(position) {
             //alert("API geolocation success!\n\nlat = " + position.coords.latitude + "\nlng = " + position.coords.longitude);
              

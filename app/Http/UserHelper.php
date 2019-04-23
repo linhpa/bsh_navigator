@@ -22,7 +22,7 @@ class UserHelper
 		return $this->instance;
 	}
 
-	public static function updateUserStatus(User $user, $status, $expiry_time = null) {
+	public static function updateUserStatus(User $user, $status, $expiry_time = 0) {
         if ($user->gdv_id) {
             $data = [];
             

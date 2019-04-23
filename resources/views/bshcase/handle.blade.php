@@ -755,7 +755,7 @@ var apiGeolocationSuccess = function(position) {
     @endif
 
     markers.push(new google.maps.Marker({          
-        icon: "{{ asset('images/red-dot.png') }}",,
+        icon: "{{ asset('images/red-dot.png') }}",
         title: 'Current Position',
         position: {lat: current_lat, lng: current_lng},
         map: map

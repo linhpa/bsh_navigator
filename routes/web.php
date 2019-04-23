@@ -88,6 +88,8 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::resource('users', 'UserController', ['except' => [
     	'create', 'store'
 	]]);
+
+	Route::post('setUsersAvailability', 'UserController@setUsersAvailability');
 }); 	
 
 Route::get('/home', 'HomeController@index')->name('home');

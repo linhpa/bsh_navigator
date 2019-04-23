@@ -330,7 +330,9 @@ body {
                   </div>
                   <div class="modal-footer">
                     <button type="button" class="btn btn-success" onclick="takeCaseConfirm({{ @$case->id }})">Take</button>
+                    @if (@$case->status != 4)
                     <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#rejectCaseModal-{{ @$case->id }}">Reject</button>
+                    @endif
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                   </div>
                 </div>
@@ -350,7 +352,19 @@ body {
                   <div class="modal-body">
                     <p><strong>Rejection Reason</strong></p>
                     <div style="width: 100%">
-                        <textarea style="width: 100%" rows="3" id="rejectionReason-{{ @$case->id }}" placeholder="Enter rejection reason here..."></textarea>
+                        <div class="form-group">
+                            <select id="rejectionReason-{{ @$case->id }}">
+                                <option value="">--Select Reason--</option>
+                                <option value="1">Tôi bận giám định vụ xe khác (BKS …)</option>
+                                <option value="2">Tôi bận việc khác do cấp trên giao</option>
+                                <option value="3">Tôi bận việc riêng</option>
+                                <option value="4">Tôi mệt, không muốn đi.</option>
+                                <option value="5">Lý do khác: …</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <textarea style="width: 100%" rows="3" id="rejectionDescription-{{ @$case->id }}" placeholder="Enter detail description here..."></textarea>
+                        </div>
                     </div>
                   </div>
                   <div class="modal-footer">
@@ -412,9 +426,10 @@ body {
         let data = {
             _token: "{{ csrf_token() }}",
             case_id: caseId,
-            rejection_reason: $("#rejectionReason-" + caseId).val()
+            rejection_reason: $("#rejectionReason-" + caseId).children("option:selected").html(),
+            rejection_description: $("#rejectionDescription-" + caseId).val(),
         }
-
+        
         $.ajax({
             method: "POST",
             url: "{{ url('bsh_cases/rejectCase') }}",
