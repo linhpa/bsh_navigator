@@ -240,9 +240,19 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-xs-12">
-                        <button class="btn btn-primary btn-lg btn-block next" id="confirmArrived" style="">Confirm Arrival<!-- <span class="glyphicon glyphicon-chevron-right"></span> --></button>
+                    <div class="btn-group btn-group-justified" role="group" aria-label="">
+                        <div class="btn-group btn-group-lg" role="group" aria-label="">
+                            <a id="googlemaps-link" class="btn btn-default" target="_blank" href="http://maps.google.com/?daddr={{ @$case->lat2 }},{{ @$case->lng2 }}">Open Google Map</a>
+                    
+                        </div>
+                        <div class="btn-group btn-group-lg" role="group" aria-label="">
+                            <button class="btn btn-primary btn-lg btn-block next">Confirm Arrival</button>
+                        </div>
                     </div>
+                
+                    <!-- <div class="col-xs-12">
+                        <button class="btn btn-primary btn-lg btn-block next" id="confirmArrived" style="">Confirm Arrival</button>
+                    </div> -->
                 </div>
             </div>
         </div>
@@ -829,6 +839,7 @@ $.post({
             let position = data.data.position
             apiGeolocationSuccess(position)
             checkDistance(position.coords.latitude, position.coords.longitude)
+            // $("#googlemaps-link").attr("href", "http://maps.google.com/?saddr=" + position.coords.latitude + "," + position.coords.longitude + "&daddr={{ @$case->lat2 }},{{ @$case->lng2 }}")
         }
     },
     error: (xhr) => {
