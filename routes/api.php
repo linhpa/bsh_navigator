@@ -22,4 +22,5 @@ Route::post('auth/login', 'UserController@login');
 Route::group(['middleware' => 'jwt.auth'], function () {
 	Route::get('/bshcase', 'BshCaseController@getCase');
 	Route::post('/bshcase', 'BshCaseController@postCase');
+	Route::post('/bshcase/reassignCase', 'BshCaseController@reassignCase');
 });

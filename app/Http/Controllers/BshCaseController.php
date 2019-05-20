@@ -540,4 +540,13 @@ class BshCaseController extends Controller
 
         return response()->json(['result' => false]);
     }
+
+    public function reassignCase(Request $request) {
+        $case = BshCase::where('case_id', $request->case_id)->first();
+        $case->status = 1;
+        $case->gdv_id = $request->gdv_id;
+        $case->save();
+
+        return response()->json(['result' => true, 'message' => 'Success']);
+    }
 }
