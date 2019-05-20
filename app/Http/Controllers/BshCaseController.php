@@ -542,9 +542,11 @@ class BshCaseController extends Controller
     }
 
     public function reassignCase(Request $request) {
-        $case = BshCase::where('case_id', $request->case_id)->first();
+        $user = User::where('gdv_id', $request->input('gdv_id'))->orderBy('created_at', 'desc')->first();
+
+        $case = BshCase::where('case_id', $request->input('case_id'))->first();
         $case->status = 1;
-        $case->gdv_id = $request->gdv_id;
+        $case->user_id = $user->id;
         $case->save();
 
         return response()->json(['result' => true, 'message' => 'Success']);
